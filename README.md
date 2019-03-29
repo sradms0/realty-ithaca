@@ -13,7 +13,7 @@ Be sure to have the following installed on your machine
 * [MongoDB](https://www.mongodb.com)
 
 For testing this API, a REST client can be used with the provided `/server/realty-ithaca_requests.json` file (this will need editing: ids, etc.)
-* [Jnsomnia](https://insomnia.rest)
+* [Insomnia](https://insomnia.rest)
 
 ### Installation
 1. Create a free [Cloudinary](https://cloudinary.com) account and get an API key to store images
