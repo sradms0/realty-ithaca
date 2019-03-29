@@ -1,0 +1,14 @@
+# dependencies
+node_modules
+
+# test files
+test_images
+
+# local configurations
+.env
+
+# vim
+.*.sw*
+
+# logs
+*.log

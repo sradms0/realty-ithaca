@@ -1,0 +1,26 @@
+{
+  "name": "realty-ithaca",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd server && npm start"
+  },
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sradms0/realty-ithaca.git"
+  },
+  "author": "Scott Adams <sradms0@protonmail.com>",
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/sradms0/realty-ithaca/issues"
+  },
+  "homepage": "https://github.com/sradms0/realty-ithaca#readme",
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  },
+  "dependencies": {
+    "server": "file:./server"
+  }
+}
