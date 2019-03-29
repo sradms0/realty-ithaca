@@ -8,7 +8,7 @@ const mongoose          = require('mongoose');
 const cloudinary        = require('cloudinary');
 const multer            = require('multer');
 const cloudinaryStorage = require('multer-storage-cloudinary');
-const session           = require('express-session');
+//const session           = require('express-session');
 const path              = require('path');
 const dotenv            = require('dotenv');
 
@@ -60,7 +60,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 
 //test route
-app.get('/api', (req, res) => res.json({ message: 'welcome :)' }));
+app.get('/api', (req, res) => res.json({ message: `${new Date()}: ping successful` }));
 app.get('/', (req, res) => res.redirect('/api'));
 const imageRoutes   = require('./routes/image')   (app);
 const addressRoutes = require('./routes/address') (app);

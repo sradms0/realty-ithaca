@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cd server && npm start"
+    "start":"concurrently 'cd server && npm start' 'cd client && npm start'",
+    "start-watch":"concurrently 'cd server && npm run start-watch' 'cd client && npm start'"
   },
   "keywords": [],
   "repository": {
@@ -21,6 +22,7 @@
     "concurrently": "^4.1.0"
   },
   "dependencies": {
+    "client": "file:./client",
     "server": "file:./server"
   }
 }
