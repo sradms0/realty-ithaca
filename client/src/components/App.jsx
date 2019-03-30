@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import ImageUpload from './Image/ImageUpload';
+
 export default class App extends Component {
   state = {
     message: ''
@@ -18,10 +20,7 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <p>{this.state.message}</p>
-          <button onClick={this.ping}>ping</button>
-        </header>
+        <ImageUpload />
       </div>
     );
   }
