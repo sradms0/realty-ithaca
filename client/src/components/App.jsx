@@ -3,6 +3,7 @@ import axios from 'axios';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import ImageUpload from './Image/ImageUpload';
+import ImageBrowser from './Image/ImageBrowser';
 
 export default class App extends Component {
   state = {
@@ -23,7 +24,8 @@ export default class App extends Component {
       <BrowserRouter>
         <div className="App">
 
-          <Route path='/image-upload' component={ImageUpload}/>
+          <Route path='/image-upload' component={ImageUpload} />
+          <Route path='/image-browser' component={ImageBrowser} />
 
         </div>
       </BrowserRouter>
