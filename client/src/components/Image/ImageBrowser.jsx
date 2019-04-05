@@ -28,7 +28,7 @@ export default class ImageBrowser extends Component {
 
     // remove from both db and state
     try {
-      const res = await axios.delete('/api/image', images[idx]._id)
+      const res = await axios.delete(`/api/image/${images[idx]._id}`);
       this.setState(prevState => ({ 
         images: [...prevState.images.slice(0, idx), ...prevState.images.slice(idx+1)] 
       }));
@@ -41,8 +41,8 @@ export default class ImageBrowser extends Component {
     return (
       <ImageList 
         srcs={this.state.images.map(image => image.url)} 
-        size='tiny' 
         edit={ {remove: this.deleteImage} }
+        upload={false}
       />
     )
   }
