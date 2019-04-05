@@ -1,17 +1,16 @@
 import React from 'react'
-import { Divider, Image } from 'semantic-ui-react'
+import { Item, Image } from 'semantic-ui-react'
 import ImageItem from './ImageItem';
 
-export default function ImageList({ srcs, size, div=null, edit=null }) {
+export default function ImageList({ srcs, size, edit=null }) {
   const imageItems = srcs.map((src, i) => (
     <ImageItem 
       src={src} 
       size={size} 
-      div={div}
       edit={edit}
 
       key={i}
     />
   ));
-  return (<div>{imageItems}</div>);
+  return (<Item.Group divided>{imageItems}</Item.Group>);
 }

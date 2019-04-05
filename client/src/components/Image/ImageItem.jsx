@@ -1,24 +1,20 @@
 import React from 'react'
-import { Button, Divider, Image } from 'semantic-ui-react'
+import { Button, Item } from 'semantic-ui-react'
 
-export default function ImageItem({ src, size, div=null, edit=null }) {
+export default function ImageItem({ src, edit }) {
   return (
-    <span>
-      <Image src={src} size={size}/>
-      {edit 
-        ? (
-          <Button 
-            compact
-            size='mini' 
-            icon='minus'
-            content='remove' 
-            className='remove'
-            onClick={() => edit.remove(src)}
-          />
-        ) 
-        : null
-      }
-      {div ? (<Divider />) : null}
-    </span>
+    <Item>
+      <Item.Image size='tiny' src={src} />
+      <Item.Content verticalAlign='middle'>
+        <Button 
+          compact
+          size='mini' 
+          icon='minus'
+          content='remove' 
+          className='remove'
+          onClick={() => edit.remove(src)}
+        />
+      </Item.Content>
+    </Item>
   );
 } 

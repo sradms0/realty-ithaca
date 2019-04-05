@@ -75,7 +75,6 @@ export default class ImageUpload extends Component {
     <ImageList 
       srcs={this.state.srcs} 
       size='tiny' 
-      div
       edit={ {remove: this.removeForUpload} }
     />
   );
