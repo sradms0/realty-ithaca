@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import ImageUploader from './Image/ImageUploader';
-import ImageBrowser from './Image/ImageBrowser';
+// nested routing components
+import ImageRoutes from './Image/ImageRoutes';
 
 export default class App extends Component {
   state = {
@@ -23,10 +23,7 @@ export default class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-
-          <Route path='/image-uploader' component={ImageUploader} />
-          <Route path='/image-browser' component={ImageBrowser} />
-
+          <Route path='/image' component={ImageRoutes} />
         </div>
       </BrowserRouter>
     );
