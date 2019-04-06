@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import ImageList from './ImageList';
 
-export default class ImageUpload extends Component {
+export default class ImageUploader extends Component {
   state = {
     srcs: [],
     files: [],
