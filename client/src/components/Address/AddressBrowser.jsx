@@ -9,7 +9,7 @@ export default class AddressBrowser extends Component {
     updateToggler: false
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getAllAddresses();
   }
 
