@@ -13,31 +13,69 @@ export default class AdddressUploader extends Component {
     error: false
   }
 
+  componentDidMount() {
+    const { update } = this.props;
+    if (update) this.preFill();
+  }
+
+  updateState = (update=null) => {
+    // if this is form is for updating, then 
+    // populate holder variables 
+    // and add address info
+    let _street = '', _city = '', _zip = '';
+    if (update) {
+      _street = update.street;
+      _city = update.city;
+      _zip = update.zip;
+    }
+
+    const { street, city, zip } = this.state;
+    this.setState({ 
+      street: _street,
+      city: _city,
+      zip: _zip,
+
+      addressString: `${street}, ${city} ${zip}`,
+      success: true, 
+      error: false
+    });
+  }
+
+  // fill state with address data if this form is for updating
+  preFill = () => {
+    const { address } = this.props.update;
+    this.setState({ 
+      street: address.street,
+      city: address.city,
+      zip: address.zip
+    });
+  }
+
+  // access state based on input name attr,
+  // and set from its value
   onChange = (e, { name, value }) => {
-    // access state based on input name attr,
-    // and set from its value
     this.setState({ [name]: value })
   }
 
   // upload address to server
   onSubmit = async e => {
     e.preventDefault();
-    let { street, city, zip } = this.state;
+    const { street, city, zip } = this.state;
+    const { update } = this.props;
 
     try {
-      await axios.post('/api/address', { street, city, zip });
-      // clear submitted data, but leave address string
-      // for last successful added address
-      this.setState({ 
-        street: '',
-        city: '',
-        zip: '',
-
-        addressString: `${street}, ${city} ${zip}`,
-        success: true, 
-        error: false
-
-      });
+      // update existing address if this is an update
+      // otherwise a new address is being added
+      if (update) {
+        const res = await axios.put(`/api/address/${update.address._id}`, { street, city, zip });
+        // update state/form fields and parent component to show update
+        this.updateState(res.data);
+        update.updateParentDisplay();
+      } else {
+        await axios.post('/api/address', { street, city, zip });
+        // clear state/form
+        this.updateState();
+      }
       console.log('success');
     } catch(err) {
       // clear success in case another address 
@@ -51,7 +89,8 @@ export default class AdddressUploader extends Component {
   }
 
   render() {
-    let { street, city, zip } = this.state;
+    const { street, city, zip } = this.state;
+    const { update } = this.props;
     return (
       <Form 
         error={this.state.error ? true : false} 
@@ -66,13 +105,13 @@ export default class AdddressUploader extends Component {
         />
         <Message 
           success
-          header='address added'
+          header={`address ${ update ? 'updated' : 'added' }`}
           content={this.state.addressString}
         />
 
-        <Header as='h2'> 
+        <Header as={`h${update ? 3 : 2}`}> 
           <Icon name='map signs'/>
-          <Header.Content>Address</Header.Content>
+          <Header.Content>{ `${update ? 'Update' : 'New'} Address`}</Header.Content>
         </Header>
         <Form.Field>
           <label htmlFor='street'>Street</label>

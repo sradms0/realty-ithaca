@@ -5,11 +5,19 @@ import AddressList from './AddressList';
 
 export default class AddressBrowser extends Component {
   state = {
-    addresses: []
+    addresses: [],
+    updateToggler: false
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.getAllAddresses();
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    // update data from server there was an update (put)
+    if (prevState.updateToggler  !== this.state.updateToggler) {
+      this.getAllAddresses();
+    }
   }
 
   getAllAddresses = async () => {
@@ -37,14 +45,22 @@ export default class AddressBrowser extends Component {
     }
   }
 
+  toggleUpdate = () => {
+    console.log('update view should happen.....');
+    this.setState(prevState => ({ updateToggler: !prevState.updateToggler }));
+  }
+
   render() {
+    console.log('rendered.....');
+    const { inUpdate } = this.state;
     return (
-      <AddressList 
-        remove={this.deleteAddress} 
-        addresses={this.state.addresses}
-      />
+      <div>
+        <AddressList 
+          addresses={this.state.addresses}
+          edit={ {updateParentDisplay: this.toggleUpdate, remove: this.deleteAddress} }
+        />
+      </div>
     );
   }
-  
 }
 
