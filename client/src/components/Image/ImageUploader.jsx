@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Divider, Input, Label, Button } from 'semantic-ui-react';
+import { Divider, Form, Input, Label, Button } from 'semantic-ui-react';
 import axios from 'axios';
 
 import ImageList from './ImageList';
@@ -86,7 +86,7 @@ export default class ImageUploader extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.onFormSubmit}>
+        <Form onSubmit={this.onFormSubmit}>
           <Label
             as='label'
             basic
@@ -108,7 +108,7 @@ export default class ImageUploader extends Component {
             content='Upload'
             type='submit'
           />
-        </form>
+        </Form>
         <Divider>
           {this.state.uploading 
             ? 'uploading.....'

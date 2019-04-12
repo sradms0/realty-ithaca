@@ -5,6 +5,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 // nested routing components
 import ImageRoutes from './Image/ImageRoutes';
 import AddressRoutes from './Address/AddressRoutes';
+import ListingRoutes from './Listing/ListingRoutes';
 
 export default class App extends Component {
   state = {
@@ -26,6 +27,7 @@ export default class App extends Component {
         <div className="App">
           <Route path='/image' component={ImageRoutes} />
           <Route path='/address' component={AddressRoutes} />
+          <Route path='/listing' component={ListingRoutes} />
         </div>
       </BrowserRouter>
     );
