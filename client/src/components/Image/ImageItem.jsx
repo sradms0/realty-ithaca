@@ -7,8 +7,8 @@ export default class ImageItem extends Component {
   }
 
   onClick = e => {
-    const { src } = this.props;
-    this.props.add(src);
+    const { image } = this.props;
+    this.props.add(image);
     this.setState(prevState => ({
       active: !prevState.active
     }));
@@ -28,12 +28,12 @@ export default class ImageItem extends Component {
 
 
   render() {
-    const { src, upload, listing, edit } = this.props;
+    const { image, upload, listing, edit } = this.props;
     // return the preview of an pre-uploaded image and enable removal
     if (upload) {
       return (
         <Item>
-          <Item.Image size='tiny' src={src} />
+          <Item.Image size='tiny' src={image.url} />
           <Item.Content verticalAlign='middle'>
             <Button 
               compact
@@ -41,7 +41,7 @@ export default class ImageItem extends Component {
               icon='minus'
               content='remove' 
               className='remove'
-              onClick={() => edit.remove(src)}
+              onClick={() => edit.remove(image)}
             />
           </Item.Content>
         </Item>
@@ -53,7 +53,7 @@ export default class ImageItem extends Component {
     const buttonCount = listing ? 'three' : 'two';
     return (
       <Card>
-        <Image src={src}/>
+        <Image src={image.url}/>
         <Card.Content extra>
           <div className={`ui ${buttonCount} buttons`}>
             {listing ? this.listingButton() : null}
@@ -70,7 +70,7 @@ export default class ImageItem extends Component {
               } 
             >
               <Modal.Content image>
-                <Image size='large' src={src} centered />
+                <Image size='large' src={image.url} centered />
               </Modal.Content>
             </Modal>
             <Button 
@@ -79,7 +79,7 @@ export default class ImageItem extends Component {
               color='red'
               basic
               className='remove'
-              onClick={() => edit.remove(src)}
+              onClick={() => edit.remove(image)}
             />
           </div>
         </Card.Content>

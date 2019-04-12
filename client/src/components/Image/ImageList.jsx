@@ -7,16 +7,17 @@ export default class ImageList extends Component {
     active: []
   }
 
-  addActiveItem = src => {
-    console.log(src);
+  addActiveItem = image => {
+    console.log(image);
   }
 
   imageItems = () => {
-    const { srcs, upload, listing, edit } = this.props;
+    const { images, upload, listing, edit } = this.props;
+    console.log(images);
     return (
-      srcs.map((src, i) => (
+      images.map((image, i) => (
          <ImageItem 
-           src={src} 
+           image={image} 
            edit={edit}
            upload={upload}
            listing={listing}

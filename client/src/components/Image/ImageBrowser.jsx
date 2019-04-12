@@ -21,7 +21,7 @@ export default class ImageBrowser extends Component {
     }
   }
 
-  deleteImage = async url => {
+  deleteImage = async ({ url }) => {
     // get index of selected object with matching url
     const { images } = this.state;
     const idx = images.map(image => image.url).indexOf(url);
@@ -39,9 +39,10 @@ export default class ImageBrowser extends Component {
 
   render() {
     const { listing } = this.props;
+    const { images } = this.state;
     return (
       <ImageList 
-        srcs={this.state.images.map(image => image.url)} 
+        images={images} 
         edit={ {remove: this.deleteImage} }
         upload={false}
         listing={ listing ? true : false }

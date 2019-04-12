@@ -21,7 +21,7 @@ export default class ImageUploader extends Component {
   // update files for upload prep to server
   onChange = e => {
     const newFiles = [...e.target.files];
-    const newSrcs = newFiles.map(blob => URL.createObjectURL(blob));
+    const newSrcs = newFiles.map(blob => ({ url: URL.createObjectURL(blob) }));
 
     this.setState(prevState => ({ 
       srcs: [...prevState.srcs, ...newSrcs],
@@ -73,7 +73,7 @@ export default class ImageUploader extends Component {
   // show current list of files to upload
   previewList = () => (
     <ImageList 
-      srcs={this.state.srcs} 
+      images={this.state.srcs} 
       size='tiny' 
       edit={ {remove: this.removeForUpload} }
       upload={true}
