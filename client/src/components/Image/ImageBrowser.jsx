@@ -38,11 +38,13 @@ export default class ImageBrowser extends Component {
   }
 
   render() {
+    const { listing } = this.props;
     return (
       <ImageList 
         srcs={this.state.images.map(image => image.url)} 
         edit={ {remove: this.deleteImage} }
         upload={false}
+        listing={ listing ? true : false }
       />
     )
   }

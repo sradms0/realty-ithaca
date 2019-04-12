@@ -42,7 +42,7 @@ export default class ListingUploader extends Component {
 
   // return current image feature (browser, uploader) 
   feature = () => {
-    if (this.state.imageBrowserToggled)     return (<ImageBrowser />);
+    if (this.state.imageBrowserToggled)     return (<ImageBrowser listing={true}/>);
     if (this.state.imageUploaderToggled)    return (<ImageUploader />);
     if (this.state.addressBrowserToggled)   return (<AddressBrowser />);
     if (this.state.addressUploaderToggled)  return (<AddressUploader />);
