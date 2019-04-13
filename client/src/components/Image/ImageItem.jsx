@@ -6,6 +6,13 @@ export default class ImageItem extends Component {
     active: false
   }
 
+  componentWillMount() {
+    const { listing } = this.props;
+    if (listing && this.activeImage()) {
+      this.setState({ active: true });
+    }
+  }
+
   onClick = e => {
     const { image, listingAdd, listingRemove, activeSync } = this.props;;
     console.log('activeSync:', activeSync);
@@ -29,6 +36,11 @@ export default class ImageItem extends Component {
       />
     )
   };
+
+  activeImage() {
+    const { image, activeImages } = this.props;
+    return activeImages.indexOf(image._id) > -1;
+  }
 
   render() {
     const { image, upload, listing, edit } = this.props;

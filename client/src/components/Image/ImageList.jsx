@@ -7,6 +7,13 @@ export default class ImageList extends Component {
     active: []
   }
 
+  // update active list when image 
+  // browser is closed out if in listing
+  componentWillMount() {
+    const { listing, activeImages } = this.props;
+    if (listing) this.setState({ active: [...activeImages] });
+  }
+
   addActiveItem = ({ _id }) => {
     this.setState(
       prevState => ({
@@ -27,7 +34,7 @@ export default class ImageList extends Component {
   }
 
   imageItems = () => {
-    const { images, upload, listing, activeSync, edit } = this.props;
+    const { images, upload, listing, activeSync, activeImages, edit } = this.props;
     return (
       images.map((image, i) => (
          <ImageItem 
@@ -38,6 +45,7 @@ export default class ImageList extends Component {
            listingAdd={this.addActiveItem}
            listingRemove={this.removeInactiveItem}
            activeSync={activeSync}
+           activeImages={activeImages}
            key={i}
          />
       ))

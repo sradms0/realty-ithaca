@@ -38,7 +38,7 @@ export default class ImageBrowser extends Component {
   }
 
   render() {
-    const { listing, activeSync } = this.props;
+    const { listing, activeImages, activeSync } = this.props;
     const { images } = this.state;
     return (
       <ImageList 
@@ -46,6 +46,7 @@ export default class ImageBrowser extends Component {
         edit={ {remove: this.deleteImage} }
         upload={false}
         listing={ listing ? true : false }
+        activeImages={activeImages}
         activeSync={activeSync}
       />
     );
