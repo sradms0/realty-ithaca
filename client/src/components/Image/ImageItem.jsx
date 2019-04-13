@@ -13,22 +13,43 @@ export default class ImageItem extends Component {
     }
   }
 
-  onClick = e => {
-    const { image, listingAdd, listingRemove, activeSync } = this.props;;
-    console.log('activeSync:', activeSync);
-    this.setState(
-      prevState => ({ active: !prevState.active}), 
-      () => {
-        if (this.state.active) listingAdd(image);
-        else listingRemove(image);
+  onClick = (e, { className }) => {
+    const { 
+      image, 
+      edit,
+      listing, 
+      listingAdd, 
+      listingRemove, 
+      activeSync 
+    } = this.props;
+
+    // base click on class of button
+    if (listing) {
+      if (className === 'add') {
+        // prospective image added to a new listing
+        this.setState(
+          prevState => ({ active: !prevState.active}), 
+          () => {
+            if (this.state.active) listingAdd(image);
+            else listingRemove(image);
+          }
+        );
+      } else if (className === 'remove') {
+        // current prospective image will be removed 
+        // from the list and be deleted from db
+        listingRemove(image);
+        edit.remove(image);
       }
-    );
+      // image is viewed elsewhere and is being deleted from db
+    } else if (className === 'remove') 
+        edit.remove(image);
   }
 
   listingButton = () => {
     const { active } = this.state;
     return (
       <Button 
+        className='add'
         toggle 
         active={active} 
         onClick={this.onClick}
@@ -94,7 +115,7 @@ export default class ImageItem extends Component {
               color='red'
               basic
               className='remove'
-              onClick={() => edit.remove(image)}
+              onClick={this.onClick}
             />
           </div>
         </Card.Content>

@@ -36,7 +36,7 @@ export default class ImageList extends Component {
   imageItems = () => {
     const { images, upload, listing, activeSync, activeImages, edit } = this.props;
     return (
-      images.map((image, i) => (
+      images.map(image => (
          <ImageItem 
            image={image} 
            edit={edit}
@@ -46,7 +46,7 @@ export default class ImageList extends Component {
            listingRemove={this.removeInactiveItem}
            activeSync={activeSync}
            activeImages={activeImages}
-           key={i}
+           key={image._id}
          />
       ))
     );
