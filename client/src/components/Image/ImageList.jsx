@@ -8,9 +8,10 @@ export default class ImageList extends Component {
   }
 
   addActiveItem = ({ _id }) => {
-    this.setState(prevState => ({
-      active: [ ...prevState.active, _id ]
-    }));
+    this.setState(
+      prevState => ({
+        active: [ ...prevState.active, _id ]
+      }), () => this.props.activeSync(this.state.active));
   }
 
   removeInactiveItem = ({ _id }) => {
@@ -22,11 +23,11 @@ export default class ImageList extends Component {
         ...prevState.active.slice(0,idx), 
         ...prevState.active.slice(idx+1) 
       ]
-    }));
+    }), () => this.props.activeSync(this.state.active));
   }
 
   imageItems = () => {
-    const { images, upload, listing, edit } = this.props;
+    const { images, upload, listing, activeSync, edit } = this.props;
     return (
       images.map((image, i) => (
          <ImageItem 
@@ -36,6 +37,7 @@ export default class ImageList extends Component {
            listing={listing}
            listingAdd={this.addActiveItem}
            listingRemove={this.removeInactiveItem}
+           activeSync={activeSync}
            key={i}
          />
       ))

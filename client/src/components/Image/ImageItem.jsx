@@ -7,7 +7,8 @@ export default class ImageItem extends Component {
   }
 
   onClick = e => {
-    const { image, listingAdd, listingRemove } = this.props;
+    const { image, listingAdd, listingRemove, activeSync } = this.props;;
+    console.log('activeSync:', activeSync);
     this.setState(
       prevState => ({ active: !prevState.active}), 
       () => {
