@@ -10,7 +10,7 @@ import ImageUploader from '../Image/ImageUploader';
 export default class ListingUploader extends Component {
   state = {
     address: '',
-    images: [],
+    selectedImages: [],
 
     addressBrowserToggled: false,
     addressUploaderToggled: false,
@@ -23,10 +23,12 @@ export default class ListingUploader extends Component {
 
   togglerSwitch = (e, { id }) => {
     const selected = id+'Toggled';
+
     // re-create/set non-selected togglers to false
     const togglers = Object.keys(this.state)
       .filter(i => (!i.includes(id) && i.includes('Toggled')))
       .map(i => ({ [i]: false }));
+
     // add selected toggler with opp of prev state
     togglers.unshift({ [selected]: !this.state[ [selected] ] });
 
@@ -42,8 +44,15 @@ export default class ListingUploader extends Component {
 
   // return current image feature (browser, uploader) 
   feature = () => {
-    if (this.state.imageBrowserToggled) {
-     return (<ImageBrowser activeSync={this.updateActiveImageIds} listing={true}/>);
+    const { imageBrowserToggled, selectedImages } = this.state;
+    if (imageBrowserToggled) {
+      return (
+        <ImageBrowser 
+          listing={true} 
+          activeSync={this.updateActiveImageIds} 
+          activeImages={selectedImages}
+        />
+      );
     }
     if (this.state.imageUploaderToggled)    return (<ImageUploader />);
     if (this.state.addressBrowserToggled)   return (<AddressBrowser />);
@@ -52,7 +61,12 @@ export default class ListingUploader extends Component {
   }
 
   updateActiveImageIds = ids => {
-    this.setState({ images: [...ids] });
+    this.setState({ selectedImages: [...ids] });
+  }
+
+  // in testing....
+  images = () => {
+    return this.state.selectedImages.map((i, key) => (<span key={key}>${i} </span>));
   }
 
   onSubmit = e => console.log(e, 'testing...');
@@ -79,6 +93,7 @@ export default class ListingUploader extends Component {
 
           <Form.Field>
             <label htmlFor='images'>Images</label>
+              <div>{this.images()}</div>
             <Button.Group>
               <Button id='imageBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
               <Button id='imageUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />
