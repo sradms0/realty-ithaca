@@ -7,11 +7,14 @@ export default class ImageItem extends Component {
   }
 
   onClick = e => {
-    const { image } = this.props;
-    this.props.add(image);
-    this.setState(prevState => ({
-      active: !prevState.active
-    }));
+    const { image, listingAdd, listingRemove } = this.props;
+    this.setState(
+      prevState => ({ active: !prevState.active}), 
+      () => {
+        if (this.state.active) listingAdd(image);
+        else listingRemove(image);
+      }
+    );
   }
 
   listingButton = () => {
@@ -25,7 +28,6 @@ export default class ImageItem extends Component {
       />
     )
   };
-
 
   render() {
     const { image, upload, listing, edit } = this.props;

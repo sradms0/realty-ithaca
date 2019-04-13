@@ -7,13 +7,26 @@ export default class ImageList extends Component {
     active: []
   }
 
-  addActiveItem = image => {
-    console.log(image);
+  addActiveItem = ({ _id }) => {
+    this.setState(prevState => ({
+      active: [ ...prevState.active, _id ]
+    }));
+  }
+
+  removeInactiveItem = ({ _id }) => {
+    const { active } = this.state;
+    const idx = active.indexOf(_id);
+
+    this.setState(prevState => ({
+      active: [ 
+        ...prevState.active.slice(0,idx), 
+        ...prevState.active.slice(idx+1) 
+      ]
+    }));
   }
 
   imageItems = () => {
     const { images, upload, listing, edit } = this.props;
-    console.log(images);
     return (
       images.map((image, i) => (
          <ImageItem 
@@ -21,11 +34,12 @@ export default class ImageList extends Component {
            edit={edit}
            upload={upload}
            listing={listing}
-           add={this.addActiveItem}
+           listingAdd={this.addActiveItem}
+           listingRemove={this.removeInactiveItem}
            key={i}
          />
       ))
-    )
+    );
   }
 
   render() {
