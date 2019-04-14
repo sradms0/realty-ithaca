@@ -60,7 +60,8 @@ export default class ImageItem extends Component {
 
   activeImage() {
     const { image, activeImages } = this.props;
-    return activeImages.indexOf(image._id) > -1;
+    const idx = activeImages.map(i => i._id).indexOf(image._id);
+    return idx > -1;
   }
 
   render() {

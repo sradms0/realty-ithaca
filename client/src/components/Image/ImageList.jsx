@@ -14,16 +14,16 @@ export default class ImageList extends Component {
     if (listing) this.setState({ active: [...activeImages] });
   }
 
-  addActiveItem = ({ _id }) => {
+  addActiveItem = (image) => {
     this.setState(
       prevState => ({
-        active: [ ...prevState.active, _id ]
+        active: [ ...prevState.active, image ]
       }), () => this.props.activeSync(this.state.active));
   }
 
   removeInactiveItem = ({ _id }) => {
     const { active } = this.state;
-    const idx = active.indexOf(_id);
+    const idx = active.map(image => image._id).indexOf(_id);
 
     this.setState(prevState => ({
       active: [ 

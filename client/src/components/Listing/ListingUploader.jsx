@@ -66,7 +66,7 @@ export default class ListingUploader extends Component {
 
   // in testing....
   images = () => {
-    return this.state.selectedImages.map((i, key) => (<span key={key}>${i} </span>));
+    return this.state.selectedImages.map((i, key) => (<span key={key}>${i._id} </span>));
   }
 
   onSubmit = e => console.log(e, 'testing...');
