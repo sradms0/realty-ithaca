@@ -65,9 +65,15 @@ export default class ListingUploader extends Component {
     this.setState({ selectedImages: [...ids] });
   }
 
-  // in testing....
-  images = () => {
-    return this.state.selectedImages.map((i, key) => (<span key={key}>${i._id} </span>));
+  removeSelectedImage = ({ _id }) => {
+    const { selectedImages } = this.state;
+    const idx = selectedImages.map(i => i._id).indexOf(_id);
+    this.setState(prevState => ({
+      selectedImages: [
+        ...prevState.selectedImages.slice(0,idx),
+        ...prevState.selectedImages.slice(idx+1)
+      ]
+    }))
   }
 
   onSubmit = e => console.log(e, 'testing...');
@@ -95,7 +101,7 @@ export default class ListingUploader extends Component {
 
           <Form.Field>
             <label htmlFor='images'>Images</label>
-            <ImageList preview images={selectedImages}/>
+            <ImageList preview images={selectedImages} edit={ {remove: this.removeSelectedImage} }/>
             <Button.Group>
               <Button id='imageBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
               <Button id='imageUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />
