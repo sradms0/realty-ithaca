@@ -3,21 +3,8 @@ import { Button, Card, Image, Item, Modal } from 'semantic-ui-react'
 
 export default class ImageItem extends Component {
   state = {
-    active: false,
-    listingImageRemoved: this.props.listingImageRemoved
+    active: false
   }
-
-  // update to inactive if image was removed from a listing upload
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { listing } = nextProps;
-    if (listing) {
-      if (nextProps.listingImageRemoved !== prevState.listingImageRemoved) {
-        const { activeImages } = nextProps;
-        return ({ active: false });
-      } else return null
-    }
-  }
-
 
   componentWillMount() {
     const { listing } = this.props;
@@ -78,9 +65,9 @@ export default class ImageItem extends Component {
   }
 
   render() {
-    const { image, upload, preview, listing, edit } = this.props;
+    const { image, upload, listing, edit } = this.props;
     // return the preview of an pre-uploaded image and enable removal
-    if (upload || preview) {
+    if (upload) {
       return (
         <Item>
           <Item.Image size='tiny' src={image.url} />
