@@ -58,9 +58,9 @@ export default class ImageItem extends Component {
   }
 
   render() {
-    const { image, upload, listing, edit } = this.props;
+    const { image, upload, preview, listing, edit } = this.props;
     // return the preview of an pre-uploaded image and enable removal
-    if (upload) {
+    if (upload || preview) {
       return (
         <Item>
           <Item.Image size='tiny' src={image.url} />

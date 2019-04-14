@@ -6,6 +6,7 @@ import AddressBrowser from '../Address/AddressBrowser';
 import AddressUploader from '../Address/AddressUploader';
 import ImageBrowser from '../Image/ImageBrowser';
 import ImageUploader from '../Image/ImageUploader';
+import ImageList from '../Image/ImageList';
 
 export default class ListingUploader extends Component {
   state = {
@@ -73,6 +74,7 @@ export default class ListingUploader extends Component {
 
   render() {
     const { update } = this.props;
+    const { selectedImages } = this.state;
     return ( 
       <span>
         <Form 
@@ -93,7 +95,7 @@ export default class ListingUploader extends Component {
 
           <Form.Field>
             <label htmlFor='images'>Images</label>
-              <div>{this.images()}</div>
+            <ImageList preview images={selectedImages}/>
             <Button.Group>
               <Button id='imageBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
               <Button id='imageUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />
