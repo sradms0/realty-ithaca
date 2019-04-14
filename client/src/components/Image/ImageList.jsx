@@ -4,7 +4,8 @@ import ImageItem from './ImageItem';
 
 export default class ImageList extends Component {
   state = {
-    active: []
+    active: [],
+    listingImageRemoved: this.props.listingImageRemoved
   }
 
   // update active list when image 
@@ -34,16 +35,28 @@ export default class ImageList extends Component {
   }
 
   imageItems = () => {
-    const { images, upload, listing, activeSync, activeImages, edit } = this.props;
+    const { 
+      images, 
+      upload, 
+      preview,
+      listing, 
+      listingImageRemoved, 
+      activeSync, 
+      activeImages, 
+      edit 
+    } = this.props;
+
     return (
       images.map(image => (
          <ImageItem 
            image={image} 
            edit={edit}
            upload={upload}
+           preview={preview}
            listing={listing}
            listingAdd={this.addActiveItem}
            listingRemove={this.removeInactiveItem}
+           listingImageRemoved={listingImageRemoved}
            activeSync={activeSync}
            activeImages={activeImages}
            key={image._id}
@@ -53,9 +66,9 @@ export default class ImageList extends Component {
   }
 
   render() {
-    const { upload } = this.props;
+    const { preview, upload } = this.props;
     // return a list according to view-type
-    if (upload) return (<Item.Group divided>{this.imageItems()}</Item.Group>);
+    if (upload || preview) return (<Item.Group divided>{this.imageItems()}</Item.Group>);
     return (<Card.Group itemsPerRow={4}>{this.imageItems()}</Card.Group>);
   }
 }

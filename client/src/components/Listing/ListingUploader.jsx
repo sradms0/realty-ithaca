@@ -5,12 +5,14 @@ import axios from 'axios';
 import AddressBrowser from '../Address/AddressBrowser';
 import AddressUploader from '../Address/AddressUploader';
 import ImageBrowser from '../Image/ImageBrowser';
+import ImageList from '../Image/ImageList';
 import ImageUploader from '../Image/ImageUploader';
 
 export default class ListingUploader extends Component {
   state = {
     address: '',
     selectedImages: [],
+    imageRemoved: false,
 
     addressBrowserToggled: false,
     addressUploaderToggled: false,
@@ -44,13 +46,14 @@ export default class ListingUploader extends Component {
 
   // return current image feature (browser, uploader) 
   feature = () => {
-    const { imageBrowserToggled, selectedImages } = this.state;
+    const { imageBrowserToggled, selectedImages, imageRemoved } = this.state;
     if (imageBrowserToggled) {
       return (
         <ImageBrowser 
           listing={true} 
           activeSync={this.updateActiveImageIds} 
           activeImages={selectedImages}
+          listingImageRemoved={imageRemoved}
         />
       );
     }
@@ -67,6 +70,19 @@ export default class ListingUploader extends Component {
   // in testing....
   images = () => {
     return this.state.selectedImages.map((i, key) => (<span key={key}>${i._id} </span>));
+  }
+
+  // also give option to remove active image from 
+  // prospective images for listing
+  removeSelectedImage = ({ _id }) => {
+    const idx = this.state.selectedImages.map(i => i._id).indexOf(_id)
+    this.setState(prevState => ({
+      selectedImages: [
+        ...prevState.selectedImages.slice(0,idx), 
+        ...prevState.selectedImages.slice(idx+1),
+      ],
+        imageRemoved: !prevState.imageRemoved
+    }));
   }
 
   onSubmit = e => console.log(e, 'testing...');
@@ -93,7 +109,7 @@ export default class ListingUploader extends Component {
 
           <Form.Field>
             <label htmlFor='images'>Images</label>
-              <div>{this.images()}</div>
+            <ImageList preview edit={ {remove: this.removeSelectedImage} } images={this.state.selectedImages}/>
             <Button.Group>
               <Button id='imageBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
               <Button id='imageUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />
