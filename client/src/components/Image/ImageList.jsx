@@ -4,17 +4,10 @@ import ImageItem from './ImageItem';
 
 export default class ImageList extends Component {
   state = {
-    active: []
+    active: this.props.activeImages
   }
 
-  // update active list when image 
-  // browser is closed out if in listing
-  componentWillMount() {
-    const { listing, activeImages } = this.props;
-    if (listing) this.setState({ active: [...activeImages] });
-  }
-
-  addActiveItem = (image) => {
+  addActiveItem = image => {
     this.setState(
       prevState => ({
         active: [ ...prevState.active, image ]

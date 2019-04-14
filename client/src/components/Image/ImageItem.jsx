@@ -3,14 +3,7 @@ import { Button, Card, Image, Item, Modal } from 'semantic-ui-react'
 
 export default class ImageItem extends Component {
   state = {
-    active: false
-  }
-
-  componentWillMount() {
-    const { listing } = this.props;
-    if (listing && this.activeImage()) {
-      this.setState({ active: true });
-    }
+    active: (this.props.listing && this.activeImage()) ? true : false 
   }
 
   onClick = (e, { className }) => {
