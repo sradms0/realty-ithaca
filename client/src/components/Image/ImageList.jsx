@@ -4,17 +4,22 @@ import ImageItem from './ImageItem';
 
 export default class ImageList extends Component {
   state = {
-    active: this.props.activeImages
+    active: this.props.activeImages,
+    toggle: false
   }
 
-  addActiveItem = image => {
+  toggleRefresh = () => {
+    this.setState(prevState => ({ toggle: !prevState.toggle }));
+  }
+
+  addActiveImage = image => {
     this.setState(
       prevState => ({
         active: [ ...prevState.active, image ]
       }), () => this.props.activeSync(this.state.active));
   }
 
-  removeInactiveItem = ({ _id }) => {
+  removeInactiveImage = ({ _id }) => {
     const { active } = this.state;
     const idx = active.map(image => image._id).indexOf(_id);
 
@@ -34,6 +39,8 @@ export default class ImageList extends Component {
       listing, 
       activeSync, 
       activeImages, 
+      lastImageRemoved,
+      resetLastImageRemoved,
       edit 
     } = this.props;
     return (
@@ -43,11 +50,14 @@ export default class ImageList extends Component {
            edit={edit}
            upload={upload}
            preview={preview}
+           resetLastImageRemoved={resetLastImageRemoved}
+           lastImageRemoved={lastImageRemoved}
            listing={listing}
-           listingAdd={this.addActiveItem}
-           listingRemove={this.removeInactiveItem}
+           addActiveImage={this.addActiveImage}
+           removeInactiveImage={this.removeInactiveImage}
            activeSync={activeSync}
            activeImages={activeImages}
+           toggleRefresh={this.toggleRefresh}
            key={image._id}
          />
       ))

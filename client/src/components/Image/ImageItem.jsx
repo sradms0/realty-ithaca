@@ -3,7 +3,26 @@ import { Button, Card, Image, Item, Modal } from 'semantic-ui-react'
 
 export default class ImageItem extends Component {
   state = {
-    active: (this.props.listing && this.activeImage()) ? true : false 
+    active: (this.props.listing && this.activeImage()) ? true : false
+  }
+
+  // updating based on prospective image from listing 
+  // uploader is removed from the previewed list
+  static getDerivedStateFromProps(props, state) {
+    const { 
+      image,
+      listing,
+      lastImageRemoved, 
+      resetLastImageRemoved,
+      removeInactiveImage
+    } = props;
+
+    if (listing && lastImageRemoved === image._id) {
+      // must reset back to null, other stack overflow!
+      resetLastImageRemoved();
+      removeInactiveImage(image);
+      return ({ active: false });
+    } else return null
   }
 
   onClick = (e, { className }) => {
@@ -11,8 +30,8 @@ export default class ImageItem extends Component {
       image, 
       edit,
       listing, 
-      listingAdd, 
-      listingRemove, 
+      addActiveImage,
+      removeInactiveImage,
       activeSync 
     } = this.props;
 
@@ -23,14 +42,14 @@ export default class ImageItem extends Component {
         this.setState(
           prevState => ({ active: !prevState.active}), 
           () => {
-            if (this.state.active) listingAdd(image);
-            else listingRemove(image);
+            if (this.state.active) addActiveImage(image);
+            else removeInactiveImage(image);
           }
         );
       } else if (className === 'remove') {
         // current prospective image will be removed 
         // from the list and be deleted from db
-        listingRemove(image);
+        removeInactiveImage(image);
         edit.remove(image);
       }
       // image is viewed elsewhere and is being deleted from db
@@ -58,6 +77,7 @@ export default class ImageItem extends Component {
   }
 
   render() {
+    console.log('re-fucking rendered....');
     const { image, upload, preview, listing, edit } = this.props;
     // return the preview of an pre-uploaded image and enable removal
     if (upload || preview) {

@@ -38,7 +38,7 @@ export default class ImageBrowser extends Component {
   }
 
   render() {
-    const { listing, activeImages, activeSync } = this.props;
+    const { listing, activeImages, activeSync, lastImageRemoved, resetLastImageRemoved  } = this.props;
     const { images } = this.state;
     return (
       <ImageList 
@@ -48,6 +48,8 @@ export default class ImageBrowser extends Component {
         listing={ listing ? true : false }
         activeImages={activeImages}
         activeSync={activeSync}
+        lastImageRemoved={lastImageRemoved}
+        resetLastImageRemoved={resetLastImageRemoved}
       />
     );
   }

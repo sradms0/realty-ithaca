@@ -13,6 +13,8 @@ export default class ListingUploader extends Component {
     address: '',
     selectedImages: [],
 
+    lastImageRemoved: null,
+
     addressBrowserToggled: false,
     addressUploaderToggled: false,
     imageBrowserToggled: false,
@@ -20,6 +22,10 @@ export default class ListingUploader extends Component {
 
     success: false,
     error: false
+  }
+
+  resetLastImageRemoved = () => {
+    this.setState({ lastImageRemoved: null });
   }
 
   togglerSwitch = (e, { id }) => {
@@ -49,9 +55,11 @@ export default class ListingUploader extends Component {
     if (imageBrowserToggled) {
       return (
         <ImageBrowser 
+          resetLastImageRemoved={this.resetLastImageRemoved}
           listing={true} 
           activeSync={this.updateActiveImageIds} 
           activeImages={selectedImages}
+          lastImageRemoved={this.state.lastImageRemoved}
         />
       );
     }
@@ -72,7 +80,8 @@ export default class ListingUploader extends Component {
       selectedImages: [
         ...prevState.selectedImages.slice(0,idx),
         ...prevState.selectedImages.slice(idx+1)
-      ]
+      ],
+      lastImageRemoved: _id
     }))
   }
 
