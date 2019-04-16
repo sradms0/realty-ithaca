@@ -77,7 +77,6 @@ export default class ImageItem extends Component {
   }
 
   render() {
-    console.log('re-fucking rendered....');
     const { image, upload, preview, listing, edit } = this.props;
     // return the preview of an pre-uploaded image and enable removal
     if (upload || preview) {

@@ -46,18 +46,22 @@ export default class AddressBrowser extends Component {
   }
 
   toggleUpdate = () => {
-    console.log('update view should happen.....');
     this.setState(prevState => ({ updateToggler: !prevState.updateToggler }));
   }
 
   render() {
     console.log('rendered.....');
-    const { inUpdate } = this.state;
+    const { listing } = this.props;
     return (
       <div>
         <AddressList 
           addresses={this.state.addresses}
-          edit={ {updateParentDisplay: this.toggleUpdate, remove: this.deleteAddress} }
+          edit={{
+            updateParentDisplay: this.toggleUpdate, 
+            remove: this.deleteAddress
+          }}
+          listing={listing}
+
         />
       </div>
     );

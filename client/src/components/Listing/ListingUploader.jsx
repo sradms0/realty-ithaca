@@ -63,8 +63,12 @@ export default class ListingUploader extends Component {
         />
       );
     }
+    if (this.state.addressBrowserToggled) {
+      return (
+        <AddressBrowser listing={true}/>
+      );
+    }
     if (this.state.imageUploaderToggled)    return (<ImageUploader />);
-    if (this.state.addressBrowserToggled)   return (<AddressBrowser />);
     if (this.state.addressUploaderToggled)  return (<AddressUploader />);
     return null;
   }
