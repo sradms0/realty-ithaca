@@ -101,7 +101,7 @@ export default class ListingUploader extends Component {
 
   render() {
     const { update } = this.props;
-    const { selectedImages } = this.state;
+    const { address, selectedImages } = this.state;
     return ( 
       <span>
         <Form 
@@ -114,6 +114,7 @@ export default class ListingUploader extends Component {
 
           <Form.Field>
             <label htmlFor='address'>Address</label>
+            {address ? (<div>{address}</div>) : null}
             <Button.Group>
               <Button id='addressBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
               <Button id='addressUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />
