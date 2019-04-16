@@ -33,7 +33,6 @@ export default class AddressBrowser extends Component {
     // get index of selected object with matching address id
     const { addresses } = this.state;
     const idx = addresses.map(addr => addr._id).indexOf(address._id);
-    console.log(this.state.addresses[idx]);
     // remove from both db and state
     try {
       await axios.delete(`/api/address/${addresses[idx]._id}`);
@@ -50,18 +49,20 @@ export default class AddressBrowser extends Component {
   }
 
   render() {
-    console.log('rendered.....');
-    const { listing } = this.props;
+    console.log('addrbrwsr: ', this.props);
+    const { listing, activeAddress, activeSync } = this.props;
+    const { addresses } = this.state;
     return (
       <div>
         <AddressList 
-          addresses={this.state.addresses}
+          addresses={addresses}
           edit={{
             updateParentDisplay: this.toggleUpdate, 
             remove: this.deleteAddress
           }}
           listing={listing}
-
+          activeSync={activeSync} 
+          activeAddress={activeAddress}
         />
       </div>
     );

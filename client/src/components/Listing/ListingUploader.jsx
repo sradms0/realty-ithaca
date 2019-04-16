@@ -10,7 +10,7 @@ import ImageList from '../Image/ImageList';
 
 export default class ListingUploader extends Component {
   state = {
-    address: '',
+    address: null,
     selectedImages: [],
 
     lastImageRemoved: null,
@@ -65,12 +65,20 @@ export default class ListingUploader extends Component {
     }
     if (this.state.addressBrowserToggled) {
       return (
-        <AddressBrowser listing={true}/>
+        <AddressBrowser 
+          activeAddress={this.address}
+          activeSync={this.updateActiveAddressId} 
+          listing={true}
+        />
       );
     }
     if (this.state.imageUploaderToggled)    return (<ImageUploader />);
     if (this.state.addressUploaderToggled)  return (<AddressUploader />);
     return null;
+  }
+
+  updateActiveAddressId = ({ _id=null }={}) => {
+    this.setState({ address: _id });
   }
 
   updateActiveImageIds = ids => {

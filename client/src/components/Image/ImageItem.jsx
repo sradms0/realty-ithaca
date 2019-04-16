@@ -31,8 +31,7 @@ export default class ImageItem extends Component {
       edit,
       listing, 
       addActiveImage,
-      removeInactiveImage,
-      activeSync 
+      removeInactiveImage
     } = this.props;
 
     // base click on class of button

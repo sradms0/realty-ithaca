@@ -2,13 +2,38 @@ import React, { Component } from 'react';
 import { List } from 'semantic-ui-react';
 import AddressItem from './AddressItem';
 
-export default class AddressList extends Component{
+export default class AddressList extends Component {
+  state = {
+    active: this.props.activeAddress
+  }
+
+  addActiveAddress = address => {
+    this.setState({ active: address }, 
+    () => this.props.activeSync(this.state.active));
+  }
+
+  removeInactiveAddress = () => {
+    this.setState({ active: null }, 
+    () => this.props.activeSync());
+  }
+
   addressItems = () => {
-    const { addresses, listing, edit } = this.props;
+    const { 
+      addresses, 
+      activeAddress, 
+      activeSync, 
+      listing, 
+      edit 
+    } = this.props;
+
     return (
       addresses.map((address, i) => (
         <AddressItem 
           listing={listing} 
+          addActiveAddress={this.addActiveAddress}
+          removeInactiveAddress={this.removeInactiveAddress}
+          activeSync={activeSync} 
+          activeAddress={activeAddress} 
           edit={edit} 
           address={address} 
           key={i}

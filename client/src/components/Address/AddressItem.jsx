@@ -5,15 +5,34 @@ import AddressUploader from './AddressUploader';
 export default class AddressItem extends Component {
   state = {
     editToggled: false,
-    active: false
+    active: (this.props.listing && this.activeAddress()) ? true : false
   }
 
   toggleEdit = () => {
     this.setState(prevState => ({ editToggled: !prevState.editToggled }));
   }
 
-  onClick = () => {
-    this.setState(prevState => ({ active: !prevState.active }));
+  onClick = (e, { className }) => {
+    const { 
+      listing,
+      address,
+      addActiveAddress,
+      removeInactiveAddress
+    } = this.props;
+
+    // base click on class of button
+    if (listing) {
+      if (className === 'add') {
+        // prospective image added to a new listing
+        this.setState(
+          prevState => ({ active: !prevState.active}), 
+          () => {
+            if (this.state.active) addActiveAddress(address);
+            else removeInactiveAddress();
+          }
+        );
+      }
+    }
   }
 
   listingButton = () => {
@@ -29,11 +48,20 @@ export default class AddressItem extends Component {
     )
   };
 
+  activeAddress() {
+    const { activeAddress, address } = this.props;
+    // check to see if there is an active address
+    if (activeAddress) {
+      return activeAddress._id === address._id;
+    }
+    return false;
+      
+  }
+
   render() {
     const { editToggled } = this.state;
     const { edit, address, listing } = this.props;
     const addressString = `${address.street}, ${address.city} ${address.zip}`;
-    const buttonCount = listing ? 'three' : 'two';
     return (
       <List.Item>
         <List.Content floated='right'>
