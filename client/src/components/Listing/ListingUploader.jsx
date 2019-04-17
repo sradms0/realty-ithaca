@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import AddressBrowser from '../Address/AddressBrowser';
 import AddressUploader from '../Address/AddressUploader';
+import AddressList from '../Address/AddressList';
 import ImageBrowser from '../Image/ImageBrowser';
 import ImageUploader from '../Image/ImageUploader';
 import ImageList from '../Image/ImageList';
@@ -114,7 +115,8 @@ export default class ListingUploader extends Component {
 
           <Form.Field>
             <label htmlFor='address'>Address</label>
-            {address ? (<div>{address._id}</div>) : null}
+            <AddressList preview addresses={address ? [address] : []}/>
+            {/* {address ? (<div>{address._id}</div>) : null} */}
             <Button.Group>
               <Button id='addressBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
               <Button id='addressUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />

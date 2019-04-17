@@ -27,6 +27,7 @@ export default class AddressList extends Component {
       activeAddress, 
       activeSync, 
       listing, 
+      preview,
       edit 
     } = this.props;
 
@@ -36,6 +37,7 @@ export default class AddressList extends Component {
       addresses.map((address, i) => (
         <AddressItem 
           listing={listing} 
+          preview={preview}
           addActiveAddress={this.addActiveAddress}
           removeInactiveAddress={this.removeInactiveAddress}
           activeSync={activeSync} 

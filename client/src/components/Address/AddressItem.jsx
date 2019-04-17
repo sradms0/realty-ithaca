@@ -57,7 +57,15 @@ export default class AddressItem extends Component {
         icon={active ? 'minus' : 'plus'}
       />
     )
-  };
+  }
+
+  editButton = () => (
+    <Button 
+      onClick={this.toggleEdit} 
+      color='teal' 
+      icon='pencil'
+    />
+  )
 
   prevActiveAddress() {
     const { prevActiveAddress, address } = this.props;
@@ -82,14 +90,14 @@ export default class AddressItem extends Component {
   // otherwise if there is an active address, and this is the one, add +/-
   render() {
     const { editToggled } = this.state;
-    const { edit, address, listing } = this.props;
+    const { edit, address, listing, preview } = this.props;
     const addressString = `${address.street}, ${address.city} ${address.zip}`;
     return (
       <List.Item>
         <List.Content floated='right'>
           <Button.Group>
-            {this.listingButton()}
-            <Button onClick={this.toggleEdit} color='teal' icon='pencil'/>
+            {listing ? this.listingButton() : null}
+            {!preview ? this.editButton() : null}
             <Button onClick={() => edit.remove(address)} basic color='red' icon='delete'/>
           </Button.Group>
         </List.Content>
