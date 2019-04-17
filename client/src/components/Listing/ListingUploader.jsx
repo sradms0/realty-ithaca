@@ -67,7 +67,7 @@ export default class ListingUploader extends Component {
       return (
         <AddressBrowser 
           activeAddress={this.state.address}
-          activeSync={this.updateActiveAddressId} 
+          activeSync={this.updateActiveAddress} 
           listing={true}
         />
       );
@@ -77,8 +77,8 @@ export default class ListingUploader extends Component {
     return null;
   }
 
-  updateActiveAddressId = ({ _id=null }={}) => {
-    this.setState({ address: _id });
+  updateActiveAddress = (address=null) => {
+    this.setState({ address: address });
   }
 
   updateActiveImages = images => {
@@ -114,7 +114,7 @@ export default class ListingUploader extends Component {
 
           <Form.Field>
             <label htmlFor='address'>Address</label>
-            {address ? (<div>{address}</div>) : null}
+            {address ? (<div>{address._id}</div>) : null}
             <Button.Group>
               <Button id='addressBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
               <Button id='addressUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />

@@ -72,7 +72,7 @@ export default class AddressItem extends Component {
     const { activeAddress, address } = this.props;
     // check to see if there is an active address
     if (activeAddress) {
-      return activeAddress === address._id;
+      return activeAddress._id === address._id;
     }
     return false;
       
