@@ -5,7 +5,18 @@ import AddressUploader from './AddressUploader';
 export default class AddressItem extends Component {
   state = {
     editToggled: false,
-    active: (this.props.listing && this.activeAddress()) ? true : false
+    active: this.activeAddress(),
+    lastActive: null
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.prevActiveAddress !== state.lastActive) {
+      // be sure to keep the last active address in sync from props
+      return ({ lastActive: props.prevActiveAddress });
+    } else if (state.lastActive && state.lastActive._id === props.address._id) {
+      // if this was the last active address, set it to inactive, and reset lastActive 
+      return ({ active: false, lastActive: null});
+    } else return null;
   }
 
   toggleEdit = () => {
@@ -48,16 +59,27 @@ export default class AddressItem extends Component {
     )
   };
 
+  prevActiveAddress() {
+    const { prevActiveAddress, address } = this.props;
+    // check to see if there is an active address
+    if (prevActiveAddress) {
+      return prevActiveAddress._id === address._id;
+    }
+    return false;
+  }
+
   activeAddress() {
     const { activeAddress, address } = this.props;
     // check to see if there is an active address
     if (activeAddress) {
-      return activeAddress._id === address._id;
+      return activeAddress === address._id;
     }
     return false;
       
   }
 
+  // if there is no active address, add +
+  // otherwise if there is an active address, and this is the one, add +/-
   render() {
     const { editToggled } = this.state;
     const { edit, address, listing } = this.props;

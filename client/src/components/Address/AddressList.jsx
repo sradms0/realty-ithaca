@@ -4,12 +4,16 @@ import AddressItem from './AddressItem';
 
 export default class AddressList extends Component {
   state = {
-    active: this.props.activeAddress
+    active: this.props.activeAddress,
+    lastActive: null
   }
 
   addActiveAddress = address => {
-    this.setState({ active: address }, 
-    () => this.props.activeSync(this.state.active));
+    this.setState(prevState => ({
+        active: address, 
+        lastActive: prevState.active
+      }),
+      () => this.props.activeSync(this.state.active));
   }
 
   removeInactiveAddress = () => {
@@ -26,6 +30,8 @@ export default class AddressList extends Component {
       edit 
     } = this.props;
 
+    const { active, lastActive } = this.state;
+
     return (
       addresses.map((address, i) => (
         <AddressItem 
@@ -33,7 +39,8 @@ export default class AddressList extends Component {
           addActiveAddress={this.addActiveAddress}
           removeInactiveAddress={this.removeInactiveAddress}
           activeSync={activeSync} 
-          activeAddress={activeAddress} 
+          activeAddress={active} 
+          prevActiveAddress={lastActive}
           edit={edit} 
           address={address} 
           key={i}

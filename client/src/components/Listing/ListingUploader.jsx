@@ -51,7 +51,7 @@ export default class ListingUploader extends Component {
 
   // return current image feature (browser, uploader) 
   feature = () => {
-    const { imageBrowserToggled, selectedImages } = this.state;
+    const { imageBrowserToggled, address, selectedImages } = this.state;
     if (imageBrowserToggled) {
       return (
         <ImageBrowser 
@@ -66,7 +66,7 @@ export default class ListingUploader extends Component {
     if (this.state.addressBrowserToggled) {
       return (
         <AddressBrowser 
-          activeAddress={this.address}
+          activeAddress={this.state.address}
           activeSync={this.updateActiveAddressId} 
           listing={true}
         />
@@ -97,7 +97,7 @@ export default class ListingUploader extends Component {
     }))
   }
 
-  onSubmit = e => console.log(e, 'testing...');
+  //onSubmit = e => console.log(e, 'testing...');
 
   render() {
     const { update } = this.props;

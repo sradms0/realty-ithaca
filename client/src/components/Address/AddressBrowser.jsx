@@ -49,7 +49,6 @@ export default class AddressBrowser extends Component {
   }
 
   render() {
-    console.log('addrbrwsr: ', this.props);
     const { listing, activeAddress, activeSync } = this.props;
     const { addresses } = this.state;
     return (
