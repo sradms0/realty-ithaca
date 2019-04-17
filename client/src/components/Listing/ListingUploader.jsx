@@ -57,7 +57,7 @@ export default class ListingUploader extends Component {
         <ImageBrowser 
           resetLastImageRemoved={this.resetLastImageRemoved}
           listing={true} 
-          activeSync={this.updateActiveImageIds} 
+          activeSync={this.updateActiveImages} 
           activeImages={selectedImages}
           lastImageRemoved={this.state.lastImageRemoved}
         />
@@ -81,8 +81,8 @@ export default class ListingUploader extends Component {
     this.setState({ address: _id });
   }
 
-  updateActiveImageIds = ids => {
-    this.setState({ selectedImages: [...ids] });
+  updateActiveImages = images => {
+    this.setState({ selectedImages: [...images] });
   }
 
   removeSelectedImage = ({ _id }) => {
