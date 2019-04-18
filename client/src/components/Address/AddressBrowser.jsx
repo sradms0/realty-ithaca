@@ -49,7 +49,13 @@ export default class AddressBrowser extends Component {
   }
 
   render() {
-    const { listing, activeAddress, activeSync } = this.props;
+    const { 
+      listing, 
+      activeAddress, 
+      activeSync,
+      lastAddressRemoved, 
+      resetLastAddressRemoved
+    } = this.props;
     const { addresses } = this.state;
     return (
       <div>
@@ -62,6 +68,8 @@ export default class AddressBrowser extends Component {
           listing={listing}
           activeSync={activeSync} 
           activeAddress={activeAddress}
+          lastAddressRemoved={lastAddressRemoved}
+          resetLastAddressRemoved={resetLastAddressRemoved}
         />
       </div>
     );

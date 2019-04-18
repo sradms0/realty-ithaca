@@ -10,13 +10,24 @@ export default class AddressItem extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.prevActiveAddress !== state.lastActive) {
-      // be sure to keep the last active address in sync from props
-      return ({ lastActive: props.prevActiveAddress });
-    } else if (state.lastActive && state.lastActive._id === props.address._id) {
-      // if this was the last active address, set it to inactive, and reset lastActive 
-      return ({ active: false, lastActive: null});
-    } else return null;
+    if (props.listing) {
+      if (props.prevActiveAddress !== state.lastActive) {
+        // be sure to keep the last active address in sync from props
+        return ({ lastActive: props.prevActiveAddress });
+      } 
+      if (state.lastActive && state.lastActive._id === props.address._id) {
+        // if this was the last active address, set it to inactive, and reset lastActive 
+        return ({ active: false, lastActive: null });
+      }
+      if (props.lastAddressRemoved === props.address._id) {
+        // if this address has been removed from the preview
+        // list of listing, then deactivate address here,
+        // reset lastActive, too
+        props.resetLastAddressRemoved(); 
+        return ({ active: false, lastActive: null });
+      }
+    }
+    return null;
   }
 
   toggleEdit = () => {
@@ -42,6 +53,8 @@ export default class AddressItem extends Component {
             else removeInactiveAddress();
           }
         );
+      } else {
+
       }
     }
   }

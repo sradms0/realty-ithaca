@@ -5,7 +5,7 @@ import AddressItem from './AddressItem';
 export default class AddressList extends Component {
   state = {
     active: this.props.activeAddress,
-    lastActive: null
+    lastActive: null // needed to allow only one address to be active
   }
 
   addActiveAddress = address => {
@@ -24,6 +24,8 @@ export default class AddressList extends Component {
   addressItems = () => {
     const { 
       addresses, 
+      lastAddressRemoved,
+      resetLastAddressRemoved,
       activeAddress, 
       activeSync, 
       listing, 
@@ -40,6 +42,8 @@ export default class AddressList extends Component {
           preview={preview}
           addActiveAddress={this.addActiveAddress}
           removeInactiveAddress={this.removeInactiveAddress}
+          lastAddressRemoved={lastAddressRemoved}
+          resetLastAddressRemoved={resetLastAddressRemoved}
           activeSync={activeSync} 
           activeAddress={active} 
           prevActiveAddress={lastActive}

@@ -17,8 +17,10 @@ export default class ImageItem extends Component {
       removeInactiveImage
     } = props;
 
+    // if this image has been removed from the preview
+    // list of listing, then deactivate the image here
     if (listing && lastImageRemoved === image._id) {
-      // must reset back to null, other stack overflow!
+      // must reset back to null, otherwise stack overflow!
       resetLastImageRemoved();
       removeInactiveImage(image);
       return ({ active: false });

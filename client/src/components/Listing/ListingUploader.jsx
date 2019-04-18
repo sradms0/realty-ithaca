@@ -14,6 +14,9 @@ export default class ListingUploader extends Component {
     address: null,
     selectedImages: [],
 
+    // use for updating children to inactive 
+    // if removed from previewer
+    lastAddressRemoved: null,
     lastImageRemoved: null,
 
     addressBrowserToggled: false,
@@ -28,6 +31,11 @@ export default class ListingUploader extends Component {
   resetLastImageRemoved = () => {
     this.setState({ lastImageRemoved: null });
   }
+
+  resetLastAddressRemoved = () => {
+    this.setState({ lastAddressRemoved: null });
+  }
+
 
   togglerSwitch = (e, { id }) => {
     const selected = id+'Toggled';
@@ -70,6 +78,8 @@ export default class ListingUploader extends Component {
           activeAddress={this.state.address}
           activeSync={this.updateActiveAddress} 
           listing={true}
+          lastAddressRemoved={this.state.lastAddressRemoved}
+          resetLastAddressRemoved={this.resetLastAddressRemoved}
         />
       );
     }
@@ -84,6 +94,13 @@ export default class ListingUploader extends Component {
 
   updateActiveImages = images => {
     this.setState({ selectedImages: [...images] });
+  }
+
+  removeActiveAddress = () => {
+    this.setState(prevState => {
+      const { _id } = prevState.address;
+      return ({ address: null, lastAddressRemoved: _id});
+    });
   }
 
   removeSelectedImage = ({ _id }) => {
@@ -115,8 +132,7 @@ export default class ListingUploader extends Component {
 
           <Form.Field>
             <label htmlFor='address'>Address</label>
-            <AddressList preview addresses={address ? [address] : []}/>
-            {/* {address ? (<div>{address._id}</div>) : null} */}
+            <AddressList preview addresses={address ? [address] : []} edit={ {remove: this.removeActiveAddress} }/>
             <Button.Group>
               <Button id='addressBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
               <Button id='addressUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />
