@@ -112,7 +112,7 @@ export default class ListingUploader extends Component {
         ...prevState.selectedImages.slice(idx+1)
       ],
       lastImageRemoved: _id
-    }))
+    }));
   }
 
   //onSubmit = e => console.log(e, 'testing...');

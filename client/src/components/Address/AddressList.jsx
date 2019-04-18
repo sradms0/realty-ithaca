@@ -4,8 +4,12 @@ import AddressItem from './AddressItem';
 
 export default class AddressList extends Component {
   state = {
-    active: this.props.activeAddress,
+    active: this.props.addresses[0],
     lastActive: null // needed to allow only one address to be active
+  }
+
+  resetTest = () => {
+    this.setState({ active: null, lastActive: null });
   }
 
   addActiveAddress = address => {
@@ -49,6 +53,7 @@ export default class AddressList extends Component {
           prevActiveAddress={lastActive}
           edit={edit} 
           address={address} 
+          resetTest={this.resetTest}
           key={i}
         />
       )

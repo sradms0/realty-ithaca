@@ -24,7 +24,8 @@ export default class AddressItem extends Component {
         // list of listing, then deactivate address here,
         // reset lastActive, too
         props.resetLastAddressRemoved(); 
-        return ({ active: false, lastActive: null });
+        props.removeInactiveAddress();
+        return ({ active: false });
       }
     }
     return null;
@@ -111,7 +112,7 @@ export default class AddressItem extends Component {
           <Button.Group>
             {listing ? this.listingButton() : null}
             {!preview ? this.editButton() : null}
-            <Button onClick={() => edit.remove(address)} basic color='red' icon='delete'/>
+            <Button onClick={() => {edit.remove(address)}} basic color='red' icon='delete'/>
           </Button.Group>
         </List.Content>
         <List.Content>
