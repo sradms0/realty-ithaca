@@ -22,7 +22,7 @@ export default class ImageItem extends Component {
     if (listing && lastImageRemoved === image._id) {
       resetLastImageRemoved();
       return ({ active: false });
-    } else return null
+    } else return null;
   }
 
   onClick = (e, { className }) => {

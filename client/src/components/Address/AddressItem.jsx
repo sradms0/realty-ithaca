@@ -5,28 +5,21 @@ import AddressUploader from './AddressUploader';
 export default class AddressItem extends Component {
   state = {
     editToggled: false,
-    active: this.activeAddress(),
-    lastActive: null
+    active: this.props.listing && this.activeAddress()
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.listing) {
-      if (props.prevActiveAddress !== state.lastActive) {
-        // be sure to keep the last active address in sync from props
-        return ({ lastActive: props.prevActiveAddress });
-      } 
-      if (state.lastActive && state.lastActive._id === props.address._id) {
-        // if this was the last active address, set it to inactive, and reset lastActive 
-        return ({ active: false, lastActive: null });
-      }
-      if (props.lastAddressRemoved === props.address._id) {
-        // if this address has been removed from the preview
-        // list of listing, then deactivate address here,
-        // reset lastActive, too
-        props.resetLastAddressRemoved(); 
-        props.removeInactiveAddress();
-        return ({ active: false });
-      }
+    const {
+      activeAddress,
+      address,
+      listing,
+      lastAddressRemoved,
+      resetLastAddressRemoved
+    } = props;
+
+    if (listing && lastAddressRemoved === address._id) {
+      resetLastAddressRemoved();
+      return ({ active: false });
     }
     return null;
   }
@@ -37,6 +30,7 @@ export default class AddressItem extends Component {
 
   onClick = (e, { className }) => {
     const { 
+      edit,
       listing,
       address,
       addActiveAddress,
@@ -54,10 +48,14 @@ export default class AddressItem extends Component {
             else removeInactiveAddress();
           }
         );
-      } else {
-
+      } else if (className === 'remove') {
+        // delete from db  and from list if active
+        edit.remove(address);
+        removeInactiveAddress(address);
+      } 
+    } else if (className === 'remove') {
+        edit.remove(address);
       }
-    }
   }
 
   listingButton = () => {
@@ -112,7 +110,7 @@ export default class AddressItem extends Component {
           <Button.Group>
             {listing ? this.listingButton() : null}
             {!preview ? this.editButton() : null}
-            <Button onClick={() => {edit.remove(address)}} basic color='red' icon='delete'/>
+            <Button className='remove' onClick={this.onClick} basic color='red' icon='delete'/>
           </Button.Group>
         </List.Content>
         <List.Content>

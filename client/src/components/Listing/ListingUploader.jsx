@@ -28,6 +28,18 @@ export default class ListingUploader extends Component {
     error: false
   }
 
+  addAddress = address => {
+    const { lastAddress } = this.state;
+    if (this.state.address) {
+      this.setState(prevState => ({ 
+        address: address, 
+        lastAddressRemoved: prevState.address._id}
+      ));
+    } else {
+      this.setState({ address: address });
+    }
+  }
+
   addImage = image => {
     this.setState(prevState => ({
       images: [ 
@@ -50,8 +62,20 @@ export default class ListingUploader extends Component {
     );
   }
 
+  removeAddress = () => {
+    this.setState(prevState => ({ 
+        address: null,  
+        lastAddressRemoved: prevState.address._id
+      })
+    );
+  }
+
   resetLastImageRemoved = () => {
     this.setState({ lastImageRemoved: null });
+  }
+
+  resetLastAddressRemoved = () => {
+    this.setState({ lastAddressRemoved: null });
   }
 
   togglerSwitch = (e, { id }) => {
@@ -94,6 +118,8 @@ export default class ListingUploader extends Component {
     if (this.state.addressBrowserToggled) {
       return (
         <AddressBrowser 
+          addActiveAddress={this.addAddress}
+          removeInactiveAddress={this.removeAddress}
           activeAddress={this.state.address}
           activeSync={this.updateActiveAddress} 
           listing={true}
@@ -124,7 +150,7 @@ export default class ListingUploader extends Component {
 
           <Form.Field>
             <label htmlFor='address'>Address</label>
-            <AddressList preview addresses={address ? [address] : []} edit={ {remove: this.removeActiveAddress} }/>
+            <AddressList preview addresses={address ? [address] : []} edit={ {remove: this.removeAddress} }/>
             <Button.Group>
               <Button id='addressBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
               <Button id='addressUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />

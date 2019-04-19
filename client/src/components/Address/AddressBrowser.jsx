@@ -51,6 +51,8 @@ export default class AddressBrowser extends Component {
   render() {
     const { 
       listing, 
+      addActiveAddress,
+      removeInactiveAddress,
       activeAddress, 
       activeSync,
       lastAddressRemoved, 
@@ -68,6 +70,8 @@ export default class AddressBrowser extends Component {
           listing={listing}
           activeSync={activeSync} 
           activeAddress={activeAddress}
+          addActiveAddress={addActiveAddress}
+          removeInactiveAddress={removeInactiveAddress}
           lastAddressRemoved={lastAddressRemoved}
           resetLastAddressRemoved={resetLastAddressRemoved}
         />

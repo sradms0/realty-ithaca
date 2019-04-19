@@ -4,25 +4,8 @@ import AddressItem from './AddressItem';
 
 export default class AddressList extends Component {
   state = {
-    active: this.props.addresses[0],
-    lastActive: null // needed to allow only one address to be active
-  }
-
-  resetTest = () => {
-    this.setState({ active: null, lastActive: null });
-  }
-
-  addActiveAddress = address => {
-    this.setState(prevState => ({
-        active: address, 
-        lastActive: prevState.active
-      }),
-      () => this.props.activeSync(this.state.active));
-  }
-
-  removeInactiveAddress = () => {
-    this.setState({ active: null }, 
-    () => this.props.activeSync());
+    // for listings, only one can be active
+    active: this.props.addresses[0], 
   }
 
   addressItems = () => {
@@ -30,6 +13,8 @@ export default class AddressList extends Component {
       addresses, 
       lastAddressRemoved,
       resetLastAddressRemoved,
+      addActiveAddress,
+      removeInactiveAddress,
       activeAddress, 
       activeSync, 
       listing, 
@@ -40,12 +25,12 @@ export default class AddressList extends Component {
     const { active, lastActive } = this.state;
 
     return (
-      addresses.map((address, i) => (
+      addresses.map(address => (
         <AddressItem 
           listing={listing} 
           preview={preview}
-          addActiveAddress={this.addActiveAddress}
-          removeInactiveAddress={this.removeInactiveAddress}
+          addActiveAddress={addActiveAddress}
+          removeInactiveAddress={removeInactiveAddress}
           lastAddressRemoved={lastAddressRemoved}
           resetLastAddressRemoved={resetLastAddressRemoved}
           activeSync={activeSync} 
@@ -53,8 +38,9 @@ export default class AddressList extends Component {
           prevActiveAddress={lastActive}
           edit={edit} 
           address={address} 
+          activeAddress={activeAddress}
           resetTest={this.resetTest}
-          key={i}
+          key={address._id}
         />
       )
     ));
