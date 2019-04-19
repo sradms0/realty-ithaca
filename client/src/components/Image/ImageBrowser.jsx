@@ -21,10 +21,10 @@ export default class ImageBrowser extends Component {
     }
   }
 
-  deleteImage = async ({ url }) => {
+  deleteImage = async ({ _id }) => {
     // get index of selected object with matching url
     const { images } = this.state;
-    const idx = images.map(image => image.url).indexOf(url);
+    const idx = images.map(image => image._id).indexOf(_id);
 
     // remove from both db and state
     try {
@@ -38,7 +38,15 @@ export default class ImageBrowser extends Component {
   }
 
   render() {
-    const { listing, activeImages, activeSync, lastImageRemoved, resetLastImageRemoved  } = this.props;
+    const { 
+      listing, 
+      activeImages, 
+      activeSync, 
+      lastImageRemoved, 
+      resetLastImageRemoved,
+      addActiveImage,
+      removeInactiveImage
+    } = this.props;
     const { images } = this.state;
     return (
       <ImageList 
@@ -47,7 +55,8 @@ export default class ImageBrowser extends Component {
         upload={false}
         listing={ listing ? true : false }
         activeImages={activeImages}
-        activeSync={activeSync}
+        addActiveImage={addActiveImage}
+        removeInactiveImage={removeInactiveImage}
         lastImageRemoved={lastImageRemoved}
         resetLastImageRemoved={resetLastImageRemoved}
       />

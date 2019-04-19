@@ -20,9 +20,7 @@ export default class ImageItem extends Component {
     // if this image has been removed from the preview
     // list of listing, then deactivate the image here
     if (listing && lastImageRemoved === image._id) {
-      // must reset back to null, otherwise stack overflow!
       resetLastImageRemoved();
-      removeInactiveImage(image);
       return ({ active: false });
     } else return null
   }
@@ -48,10 +46,14 @@ export default class ImageItem extends Component {
           }
         );
       } else if (className === 'remove') {
-        // current prospective image will be removed 
-        // from the list and be deleted from db
-        removeInactiveImage(image);
+        
+        // delete from db 
+        // if it is also active, current prospective image 
+        // will be removed 
         edit.remove(image);
+        if (this.activeImage()) {
+          removeInactiveImage(image);
+        }
       }
       // image is viewed elsewhere and is being deleted from db
     } else if (className === 'remove') 

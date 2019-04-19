@@ -12,10 +12,10 @@ import ImageList from '../Image/ImageList';
 export default class ListingUploader extends Component {
   state = {
     address: null,
-    selectedImages: [],
+    images: [],
 
     // use for updating children to inactive 
-    // if removed from previewer
+    // if removed from sibling list previewer
     lastAddressRemoved: null,
     lastImageRemoved: null,
 
@@ -28,14 +28,31 @@ export default class ListingUploader extends Component {
     error: false
   }
 
+  addImage = image => {
+    this.setState(prevState => ({
+      images: [ 
+        ...prevState.images, image 
+      ]})
+    );
+  }
+
+  removeImage = ({ _id }) => {
+    const { images } = this.state;
+    const idx = images.map(image => image._id).indexOf(_id);
+
+    this.setState(prevState => ({
+        images: [ 
+          ...prevState.images.slice(0,idx), 
+          ...prevState.images.slice(idx+1) 
+        ], 
+        lastImageRemoved: _id
+      })
+    );
+  }
+
   resetLastImageRemoved = () => {
     this.setState({ lastImageRemoved: null });
   }
-
-  resetLastAddressRemoved = () => {
-    this.setState({ lastAddressRemoved: null });
-  }
-
 
   togglerSwitch = (e, { id }) => {
     const selected = id+'Toggled';
@@ -60,14 +77,16 @@ export default class ListingUploader extends Component {
 
   // return current image feature (browser, uploader) 
   feature = () => {
-    const { imageBrowserToggled, address, selectedImages } = this.state;
+    const { imageBrowserToggled, address, images } = this.state;
     if (imageBrowserToggled) {
       return (
         <ImageBrowser 
           resetLastImageRemoved={this.resetLastImageRemoved}
           listing={true} 
           activeSync={this.updateActiveImages} 
-          activeImages={selectedImages}
+          activeImages={images}
+          addActiveImage={this.addImage}
+          removeInactiveImage={this.removeImage}
           lastImageRemoved={this.state.lastImageRemoved}
         />
       );
@@ -88,38 +107,11 @@ export default class ListingUploader extends Component {
     return null;
   }
 
-  updateActiveAddress = (address=null) => {
-    this.setState({ address: address });
-  }
-
-  updateActiveImages = images => {
-    this.setState({ selectedImages: [...images] });
-  }
-
-  removeActiveAddress = () => {
-    this.setState(prevState => {
-      const { _id } = prevState.address;
-      return ({ address: null, lastAddressRemoved: _id});
-    });
-  }
-
-  removeSelectedImage = ({ _id }) => {
-    const { selectedImages } = this.state;
-    const idx = selectedImages.map(i => i._id).indexOf(_id);
-    this.setState(prevState => ({
-      selectedImages: [
-        ...prevState.selectedImages.slice(0,idx),
-        ...prevState.selectedImages.slice(idx+1)
-      ],
-      lastImageRemoved: _id
-    }));
-  }
-
   //onSubmit = e => console.log(e, 'testing...');
 
   render() {
     const { update } = this.props;
-    const { address, selectedImages } = this.state;
+    const { address, images } = this.state;
     return ( 
       <span>
         <Form 
@@ -141,7 +133,7 @@ export default class ListingUploader extends Component {
 
           <Form.Field>
             <label htmlFor='images'>Images</label>
-            <ImageList preview images={selectedImages} edit={ {remove: this.removeSelectedImage} }/>
+            <ImageList preview images={images} edit={ {remove: this.removeImage} }/>
             <Button.Group>
               <Button id='imageBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
               <Button id='imageUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />
