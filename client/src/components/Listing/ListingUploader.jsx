@@ -30,14 +30,11 @@ export default class ListingUploader extends Component {
 
   addAddress = address => {
     const { lastAddress } = this.state;
+    const newState = {address: address};
     if (this.state.address) {
-      this.setState(prevState => ({ 
-        address: address, 
-        lastAddressRemoved: prevState.address._id}
-      ));
-    } else {
-      this.setState({ address: address });
+      newState.lastAddressRemoved = this.state.address._id
     }
+    this.setState(newState);
   }
 
   addImage = image => {
