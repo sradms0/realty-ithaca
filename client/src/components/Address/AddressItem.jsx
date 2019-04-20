@@ -101,7 +101,7 @@ export default class AddressItem extends Component {
   // if there is no active address, add +
   // otherwise if there is an active address, and this is the one, add +/-
   render() {
-    const { editToggled } = this.state;
+    const { active, editToggled } = this.state;
     const { edit, address, listing, preview } = this.props;
     const addressString = `${address.street}, ${address.city} ${address.zip}`;
     return (
@@ -124,7 +124,15 @@ export default class AddressItem extends Component {
           ? (
               <List.Content>
                 <Container>
-                  <AddressUploader update={ { updateParentDisplay: edit.updateParentDisplay, address: address} }/>
+                  <AddressUploader 
+                    listing={listing}
+                    active={active}
+                    update={{ 
+                      updateParentDisplay: edit.updateParentDisplay, 
+                      updateSiblingDisplay: edit.updateSiblingDisplay, 
+                      address: address
+                    }}
+                  />
                 </Container>
               </List.Content>
           ) : null

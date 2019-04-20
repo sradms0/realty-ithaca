@@ -24,6 +24,8 @@ export default class ListingUploader extends Component {
     imageBrowserToggled: false,
     imageUploaderToggled: false,
 
+    addressEdited: false,
+
     success: false,
     error: false
   }
@@ -75,6 +77,10 @@ export default class ListingUploader extends Component {
     this.setState({ lastAddressRemoved: null });
   }
 
+  updateAddress = (address) => {
+    this.setState({ address: address })
+  }
+
   togglerSwitch = (e, { id }) => {
     const selected = id+'Toggled';
 
@@ -122,6 +128,7 @@ export default class ListingUploader extends Component {
           listing={true}
           lastAddressRemoved={this.state.lastAddressRemoved}
           resetLastAddressRemoved={this.resetLastAddressRemoved}
+          updateSiblingDisplay={this.updateAddress}
         />
       );
     }

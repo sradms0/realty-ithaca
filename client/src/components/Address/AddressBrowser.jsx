@@ -54,6 +54,7 @@ export default class AddressBrowser extends Component {
       addActiveAddress,
       removeInactiveAddress,
       activeAddress, 
+      updateSiblingDisplay,
       activeSync,
       lastAddressRemoved, 
       resetLastAddressRemoved
@@ -65,6 +66,7 @@ export default class AddressBrowser extends Component {
           addresses={addresses}
           edit={{
             updateParentDisplay: this.toggleUpdate, 
+            updateSiblingDisplay: updateSiblingDisplay, 
             remove: this.deleteAddress
           }}
           listing={listing}

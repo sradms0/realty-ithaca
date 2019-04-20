@@ -61,7 +61,7 @@ export default class AdddressUploader extends Component {
   onSubmit = async e => {
     e.preventDefault();
     const { street, city, zip } = this.state;
-    const { update } = this.props;
+    const { active, update, listing } = this.props;
 
     try {
       // update existing address if this is an update
@@ -71,6 +71,13 @@ export default class AdddressUploader extends Component {
         // update state/form fields and parent component to show update
         this.updateState(res.data);
         update.updateParentDisplay();
+
+        // if the update is on an active address listing uploader,
+        //  then be sure to update that active address, too
+        if (listing && active) {
+          update.updateSiblingDisplay(res.data);
+        }
+        
       } else {
         await axios.post('/api/address', { street, city, zip });
         // clear state/form
