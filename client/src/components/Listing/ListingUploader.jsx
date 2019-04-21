@@ -26,6 +26,7 @@ export default class ListingUploader extends Component {
 
     addressEdited: false,
 
+    addressString: '',
     success: false,
     error: false
   }
@@ -137,7 +138,46 @@ export default class ListingUploader extends Component {
     return null;
   }
 
-  //onSubmit = e => console.log(e, 'testing...');
+  updateState = () => {
+    const { address: {street, city, zip} } = this.state;
+    this.setState({ 
+      address: null,
+      images: [],
+
+      lastAddressRemoved: null,
+      lastImageRemoved: null,
+
+      addressBrowserToggled: false,
+      addressUploaderToggled: false,
+      imageBrowserToggled: false,
+      imageUploaderToggled: false,
+
+      addressEdited: false,
+
+      addressString: `${street}, ${city} ${zip}`,
+      success: true,
+      error: false
+    });
+  }
+
+  onSubmit = async e => {
+    e.preventDefault();
+    const { address, images } = this.state;
+    try {
+      await axios.post('/api/listing', { address, images });
+      console.log('success');
+      this.updateState();
+    } catch (err) {
+      // clear success in case another address 
+      // is added and causes errors; the previous
+      // success message will be cleared this way
+      console.log(err);
+      this.setState({ 
+        success: false,
+        error: err.response.data.message 
+      });
+    }
+  }
 
   render() {
     const { update } = this.props;
@@ -145,8 +185,20 @@ export default class ListingUploader extends Component {
     return ( 
       <span>
         <Form 
+          error={this.state.error ? true : false} 
+          success={this.state.success} 
           onSubmit={this.onSubmit}
         >
+          <Message 
+            error
+            header='Oops'
+            content={this.state.error}
+          />
+          <Message 
+            success
+            header={'listing added'}
+            content={this.state.addressString}
+          />
           <Header as={`h${update ? 3 : 2}`}> 
             <Icon name='home'/>
             <Header.Content>{ `${update ? 'Update' : 'New'} Listing`}</Header.Content>
@@ -156,8 +208,8 @@ export default class ListingUploader extends Component {
             <label htmlFor='address'>Address</label>
             <AddressList preview addresses={address ? [address] : []} edit={ {remove: this.removeAddress} }/>
             <Button.Group>
-              <Button id='addressBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
-              <Button id='addressUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />
+              <Button type='button' id='addressBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
+              <Button type='button' id='addressUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />
             </Button.Group>
           </Form.Field>
 
@@ -165,8 +217,8 @@ export default class ListingUploader extends Component {
             <label htmlFor='images'>Images</label>
             <ImageList preview images={images} edit={ {remove: this.removeImage} }/>
             <Button.Group>
-              <Button id='imageBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
-              <Button id='imageUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />
+              <Button type='button' id='imageBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
+              <Button type='button' id='imageUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />
             </Button.Group>
           </Form.Field>
           <Button type='submit'>submit</Button>
