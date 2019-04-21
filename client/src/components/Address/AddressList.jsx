@@ -34,7 +34,6 @@ export default class AddressList extends Component {
           lastAddressRemoved={lastAddressRemoved}
           resetLastAddressRemoved={resetLastAddressRemoved}
           activeSync={activeSync} 
-          activeAddress={active} 
           prevActiveAddress={lastActive}
           edit={edit} 
           address={address} 
