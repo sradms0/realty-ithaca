@@ -2,7 +2,7 @@
 node_modules
 
 # test files
-test_images
+test_data
 
 # local configurations
 .env
