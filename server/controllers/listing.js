@@ -47,7 +47,9 @@ exports.updateOneListing = asyncHandler(async (req, res, next) => {
     {$set:updates, $push:{'images': { $each: images }}}, 
     err => { if (err) return next(err) },
     {new: true}
-  );
+  )
+  .populate('address')
+  .populate('images');
   return res.json( notFound(updatedListing, next) );
 });
 
