@@ -31,6 +31,20 @@ export default class ListingUploader extends Component {
     error: false
   }
 
+  componentDidMount() {
+    const { update } = this.props;
+    if (update) this.preFill();
+  }
+
+  // fill state with listing data if this form is for updating
+  preFill = () => {
+    const { listing: {address, images} } = this.props.update;
+    this.setState({ 
+      address: address,
+      images: images
+    });
+  }
+
   addAddress = address => {
     const { lastAddress } = this.state;
     const newState = {address: address};
@@ -138,11 +152,19 @@ export default class ListingUploader extends Component {
     return null;
   }
 
-  updateState = () => {
+  updateState = (update=null) => {
+    // if this is form is for updating, then 
+    // populate holder variables 
+    // and add listing info
+    let _address = null, _images = [];
+    if (update) {
+      _address = update.address;
+      _images = update.images;
+    }
     const { address: {street, city, zip} } = this.state;
     this.setState({ 
-      address: null,
-      images: [],
+      address: _address,
+      images: _images,
 
       lastAddressRemoved: null,
       lastImageRemoved: null,
@@ -163,12 +185,25 @@ export default class ListingUploader extends Component {
   onSubmit = async e => {
     e.preventDefault();
     const { address, images } = this.state;
+    const { update } = this.props;
+
     try {
-      await axios.post('/api/listing', { address, images });
+      // update existing listing if this is an update
+      // otherwise a new listing is being added
+      if (update) {
+        const res = await axios.put(`/api/listing/${update.listing._id}`, { address, images });
+        // update state/form fields and parent component to show update
+        this.updateState(res.data);
+        update.updateParentDisplay();
+        // update parentDisplay....
+      } else {
+        await axios.post('/api/listing', { address, images });
+        // clear state
+        this.updateState();
+      }
       console.log('success');
-      this.updateState();
     } catch (err) {
-      // clear success in case another address 
+      // clear success in case another listing 
       // is added and causes errors; the previous
       // success message will be cleared this way
       console.log(err);
@@ -196,7 +231,7 @@ export default class ListingUploader extends Component {
           />
           <Message 
             success
-            header={'listing added'}
+            header={`listing ${ update ? 'updated' : 'added' }`}
             content={this.state.addressString}
           />
           <Header as={`h${update ? 3 : 2}`}> 

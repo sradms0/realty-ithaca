@@ -21,7 +21,8 @@ export default class ListingItem extends Component {
   }
 
   render() {
-    const { listing: {address, images} } = this.props;
+    const { edit, listing } = this.props;
+    const { address, images } = listing;
     const { editToggled } = this.state;
     const addressString = `${address.street}, ${address.city} ${address.zip}`;
     return (
@@ -41,7 +42,12 @@ export default class ListingItem extends Component {
                       <div>{`images: ${images.length}`}</div>
                     </Header>
                     <Container>
-                      <ListingUploader />
+                      <ListingUploader 
+                        update={{ 
+                          listing: listing, 
+                          updateParentDisplay: edit.updateParentDisplay 
+                        }}
+                      />
                     </Container>
                   </span>
                 ) : (

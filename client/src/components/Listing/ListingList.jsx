@@ -5,7 +5,7 @@ import ListingItem from './ListingItem';
 export default function ListingList({ edit, listings }) {
   const listingItems = () => (
     listings.map(listing => 
-      (<ListingItem listing={listing} edit={edit}/>
+      (<ListingItem key={listing._id} listing={listing} edit={edit}/>
     ))
   );
   return ( 
