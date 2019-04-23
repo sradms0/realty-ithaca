@@ -29,6 +29,7 @@ export default class ImageItem extends Component {
     const { 
       image, 
       edit,
+      upload,
       listing, 
       addActiveImage,
       removeInactiveImage
@@ -41,8 +42,14 @@ export default class ImageItem extends Component {
         this.setState(
           prevState => ({ active: !prevState.active}), 
           () => {
-            if (this.state.active) addActiveImage(image);
-            else removeInactiveImage(image);
+            if (this.state.active) {
+              image.isNew = true;
+              addActiveImage(image);
+            }
+            else {
+              image.isNew = false;
+              removeInactiveImage(image);
+            }
           }
         );
       } else if (className === 'remove') {
@@ -74,13 +81,17 @@ export default class ImageItem extends Component {
   };
 
   activeImage() {
-    const { image, activeImages } = this.props;
+    const { image, activeImages, update } = this.props;
     const idx = activeImages.map(i => i._id).indexOf(image._id);
     return idx > -1;
   }
 
   render() {
-    const { image, upload, preview, listing, edit } = this.props;
+    const { image, upload, preview, listing, edit, update } = this.props;
+    image.isNew = false;
+    image.isCurrent = update ? true : false;
+    image.isDelete = false;
+
     // return the preview of an pre-uploaded image and enable removal
     if (upload || preview) {
       return (

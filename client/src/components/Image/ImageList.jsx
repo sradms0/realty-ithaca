@@ -16,6 +16,7 @@ export default class ImageList extends Component {
       images, 
       upload, 
       preview, 
+      update,
       listing, 
       activeImages, 
       lastImageRemoved,
@@ -31,6 +32,7 @@ export default class ImageList extends Component {
            edit={edit}
            upload={upload}
            preview={preview}
+           update={update}
            resetLastImageRemoved={resetLastImageRemoved}
            lastImageRemoved={lastImageRemoved}
            listing={listing}

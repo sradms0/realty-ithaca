@@ -12,7 +12,8 @@ import ImageList from '../Image/ImageList';
 export default class ListingUploader extends Component {
   state = {
     address: null,
-    images: [],
+    newImages: [],
+    currentImages: [],
 
     // use for updating children to inactive 
     // if removed from sibling list previewer
@@ -41,7 +42,7 @@ export default class ListingUploader extends Component {
     const { listing: {address, images} } = this.props.update;
     this.setState({ 
       address: address,
-      images: images
+      currentImages: images
     });
   }
 
@@ -56,20 +57,20 @@ export default class ListingUploader extends Component {
 
   addImage = image => {
     this.setState(prevState => ({
-      images: [ 
-        ...prevState.images, image 
+      newImages: [ 
+        ...prevState.newImages, image 
       ]})
     );
   }
 
   removeImage = ({ _id }) => {
-    const { images } = this.state;
-    const idx = images.map(image => image._id).indexOf(_id);
+    const { newImages } = this.state;
+    const idx = newImages.map(image => image._id).indexOf(_id);
 
     this.setState(prevState => ({
-        images: [ 
-          ...prevState.images.slice(0,idx), 
-          ...prevState.images.slice(idx+1) 
+        newImages: [ 
+          ...prevState.newImages.slice(0,idx), 
+          ...prevState.newImages.slice(idx+1) 
         ], 
         lastImageRemoved: _id
       })
@@ -119,14 +120,14 @@ export default class ListingUploader extends Component {
 
   // return current image feature (browser, uploader) 
   feature = () => {
-    const { imageBrowserToggled, address, images } = this.state;
+    const { imageBrowserToggled, address, newImages } = this.state;
     if (imageBrowserToggled) {
       return (
         <ImageBrowser 
           resetLastImageRemoved={this.resetLastImageRemoved}
           listing={true} 
           activeSync={this.updateActiveImages} 
-          activeImages={images}
+          activeImages={newImages}
           addActiveImage={this.addImage}
           removeInactiveImage={this.removeImage}
           lastImageRemoved={this.state.lastImageRemoved}
@@ -156,15 +157,15 @@ export default class ListingUploader extends Component {
     // if this is form is for updating, then 
     // populate holder variables 
     // and add listing info
-    let _address = null, _images = [];
+    let _address = null, _newImages = [];
     if (update) {
       _address = update.address;
-      _images = update.images;
+      _newImages = update.newImages;
     }
     const { address: {street, city, zip} } = this.state;
     this.setState({ 
       address: _address,
-      images: _images,
+      newImages: _newImages,
 
       lastAddressRemoved: null,
       lastImageRemoved: null,
@@ -184,20 +185,21 @@ export default class ListingUploader extends Component {
 
   onSubmit = async e => {
     e.preventDefault();
-    const { address, images } = this.state;
+    const { address, newImages, currentImages, deleteImages } = this.state;
     const { update } = this.props;
 
+    let images;
     try {
       // update existing listing if this is an update
       // otherwise a new listing is being added
       if (update) {
-        const res = await axios.put(`/api/listing/${update.listing._id}`, { address, images });
+        const res = await axios.put(`/api/listing/${update.listing._id}`, { address, newImages });
         // update state/form fields and parent component to show update
         this.updateState(res.data);
         update.updateParentDisplay();
         // update parentDisplay....
       } else {
-        await axios.post('/api/listing', { address, images });
+        await axios.post('/api/listing', { address, images: newImages });
         // clear state
         this.updateState();
       }
@@ -216,7 +218,7 @@ export default class ListingUploader extends Component {
 
   render() {
     const { update } = this.props;
-    const { address, images } = this.state;
+    const { address, newImages, currentImages } = this.state;
     return ( 
       <span>
         <Form 
@@ -249,8 +251,8 @@ export default class ListingUploader extends Component {
           </Form.Field>
 
           <Form.Field>
-            <label htmlFor='images'>Images</label>
-            <ImageList preview images={images} edit={ {remove: this.removeImage} }/>
+            <label htmlFor='newImages'>Images</label>
+            <ImageList update={update ? true : false} preview images={[...newImages, ...currentImages]} edit={ {remove: this.removeImage} }/>
             <Button.Group>
               <Button type='button' id='imageBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
               <Button type='button' id='imageUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />
