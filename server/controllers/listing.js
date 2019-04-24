@@ -45,7 +45,6 @@ exports.updateOneListing = asyncHandler(async (req, res, next) => {
   const updatedListing  = await Listing.findOneAndUpdate(
     {_id: req.params.id}, 
     {$set:updates, $push:{'images': { $each: images }}}, 
-    err => { if (err) return next(err) },
     {new: true}
   )
   .populate('address')
