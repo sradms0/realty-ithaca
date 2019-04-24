@@ -157,15 +157,16 @@ export default class ListingUploader extends Component {
     // if this is form is for updating, then 
     // populate holder variables 
     // and add listing info
-    let _address = null, _newImages = [];
+    let _address = null, _currentImages = [];
     if (update) {
       _address = update.address;
-      _newImages = update.newImages;
+      _currentImages = update.images;
     }
     const { address: {street, city, zip} } = this.state;
     this.setState({ 
       address: _address,
-      newImages: _newImages,
+      newImages: [],
+      currentImages: _currentImages,
 
       lastAddressRemoved: null,
       lastImageRemoved: null,
@@ -193,11 +194,10 @@ export default class ListingUploader extends Component {
       // update existing listing if this is an update
       // otherwise a new listing is being added
       if (update) {
-        const res = await axios.put(`/api/listing/${update.listing._id}`, { address, newImages });
+        const res = await axios.put(`/api/listing/${update.listing._id}`, { address, images: newImages });
         // update state/form fields and parent component to show update
         this.updateState(res.data);
         update.updateParentDisplay();
-        // update parentDisplay....
       } else {
         await axios.post('/api/listing', { address, images: newImages });
         // clear state
