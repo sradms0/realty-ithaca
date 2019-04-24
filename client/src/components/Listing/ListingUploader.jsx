@@ -127,7 +127,7 @@ export default class ListingUploader extends Component {
           resetLastImageRemoved={this.resetLastImageRemoved}
           listing={true} 
           activeSync={this.updateActiveImages} 
-          activeImages={newImages}
+          activeImages={[....currentImages, ..newImages]}
           addActiveImage={this.addImage}
           removeInactiveImage={this.removeImage}
           lastImageRemoved={this.state.lastImageRemoved}
