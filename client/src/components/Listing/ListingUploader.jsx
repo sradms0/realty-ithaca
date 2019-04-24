@@ -120,14 +120,14 @@ export default class ListingUploader extends Component {
 
   // return current image feature (browser, uploader) 
   feature = () => {
-    const { imageBrowserToggled, address, newImages } = this.state;
+    const { imageBrowserToggled, address, currentImages, newImages } = this.state;
     if (imageBrowserToggled) {
       return (
         <ImageBrowser 
           resetLastImageRemoved={this.resetLastImageRemoved}
           listing={true} 
           activeSync={this.updateActiveImages} 
-          activeImages={[....currentImages, ..newImages]}
+          activeImages={[...currentImages, ...newImages]}
           addActiveImage={this.addImage}
           removeInactiveImage={this.removeImage}
           lastImageRemoved={this.state.lastImageRemoved}
