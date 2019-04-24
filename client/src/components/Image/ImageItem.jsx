@@ -88,9 +88,8 @@ export default class ImageItem extends Component {
 
   render() {
     const { image, upload, preview, listing, edit, update } = this.props;
-    image.isNew = false;
-    image.isCurrent = update ? true : false;
-    image.isDelete = false;
+    image.isCurrent = update && !image.isNew ? true : false;
+    image.isNew = !image.isCurrent;
 
     // return the preview of an pre-uploaded image and enable removal
     if (upload || preview) {
