@@ -40,7 +40,7 @@ export default class ImageList extends Component {
            removeInactiveImage={removeInactiveImage}
            activeImages={activeImages}
            toggleRefresh={this.toggleRefresh}
-           key={image._id}
+           key={image._id ? image._id : image.url}
          />
       ))
     );
