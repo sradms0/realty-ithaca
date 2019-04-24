@@ -13,12 +13,10 @@ export default class ListingItem extends Component {
   }
 
   onClick = (e, { className }) => {
-    if (className === 'edit') {
-      this.toggleEdit();
-    } else if (className === 'remove') {
-      console.log('I will delete in the future, I promise..');
-    }
-  }
+    const { edit, listing } = this.props;
+    if (className === 'edit') this.toggleEdit();
+    else if (className === 'remove') edit.remove(listing);
+  } 
 
   render() {
     const { edit, listing } = this.props;

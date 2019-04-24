@@ -29,6 +29,21 @@ export default class ListingBrowser extends Component {
     }
   }
 
+  deleteListing = async listing => {
+    // get index of selected object with matching listing id
+    const { listings } = this.state;
+    const idx = listings.map(addr => addr._id).indexOf(listing._id);
+    // remove from both db and state
+    try {
+      await axios.delete(`/api/listing/${listings[idx]._id}`);
+      this.setState(prevState => ({ 
+        listings: [...prevState.listings.slice(0,idx), ...prevState.listings.slice(idx+1)] 
+      }));
+    } catch (err) {
+        console.log(err);
+    }
+  }
+
   toggleUpdate = () => {
     this.setState(prevState => ({ updateToggler: !prevState.updateToggler }));
   }
