@@ -63,14 +63,17 @@ export default class ListingUploader extends Component {
     );
   }
 
-  removeImage = ({ _id }) => {
-    const { newImages } = this.state;
-    const idx = newImages.map(image => image._id).indexOf(_id);
+  removeImage = (image) => {
+    const { currentImages, newImages } = this.state;
+    const { _id } = image;
+    // set images to focus on and find index of img to delete
+    const key = image.new ? 'newImages' : 'currentImages';
+    const idx = this.state[key].map(image => image._id).indexOf(_id);
 
     this.setState(prevState => ({
-        newImages: [ 
-          ...prevState.newImages.slice(0,idx), 
-          ...prevState.newImages.slice(idx+1) 
+        [key]: [ 
+          ...prevState[key].slice(0,idx), 
+          ...prevState[key].slice(idx+1) 
         ], 
         lastImageRemoved: _id
       })
