@@ -1,10 +1,18 @@
 'use strict';
 
 const Listing = require('../models/listing');
+const Image = require('../models/image');
 const { asyncHandler, notFound } = require('./util/err');
 
 // POST: create new listing
 exports.createOneListing = asyncHandler(async (req, res, next) => {
+  // update all image status to true
+  await Image.update(
+    { '_id': {$in: req.body.images} },
+    { status: true },
+    { multi: true }
+  );
+
   const newListing = await Listing.create(req.body);
   return res.status(201).json(newListing);
 });

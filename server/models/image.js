@@ -19,6 +19,11 @@ const ImageSchema = new Schema({
     type: String,
     require: true
   },
+
+  status: {
+    type: Boolean,
+    default: false
+  }
 });
 
 // export image model
