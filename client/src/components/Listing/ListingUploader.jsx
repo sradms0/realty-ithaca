@@ -14,6 +14,7 @@ export default class ListingUploader extends Component {
     address: null,
     newImages: [],
     currentImages: [],
+    deleteImages: [],
 
     // use for updating children to inactive 
     // if removed from sibling list previewer
@@ -55,29 +56,55 @@ export default class ListingUploader extends Component {
     this.setState(newState);
   }
 
-  addImage = image => {
-    this.setState(prevState => ({
-      newImages: [ 
-        ...prevState.newImages, image 
-      ]})
-    );
+  shiftImage = (image,  verb) => {
+    const { currentImages, deleteImages, newImages } = this.state;
+    const { _id } = image;
+    const key = image.status ? 'currentImages' : 'newImages';
+    const selected = this.state[key];
+    console.log(selected, key)
+
+    let update;
+    let idx;
+
+    if (verb) {
+      if (verb === 'add') {
+        // if image was current, then move it back to curentImages
+        // otherwise it is a new image
+        update = { [key]: [...selected, image] };
+        if (key === 'currentImages') {
+          idx = deleteImages.map(image => image._id).indexOf(_id);
+          update.deleteImages = [
+            ...deleteImages.slice(0,idx), 
+            ...deleteImages.slice(idx+1) 
+          ];
+        }
+
+      } else if (verb === 'remove') {
+        // remove from selected (current or new) image list
+        idx = selected.map(image => image._id).indexOf(_id);
+        update = {
+          [key]: [ 
+            ...selected.slice(0,idx), 
+            ...selected.slice(idx+1) 
+          ],
+          lastImageRemoved: _id
+        }
+        // if image was current, then move it to deleteImages
+        // otherwise this was a new image
+        if (key === 'currentImages') {
+          update.deleteImages = [
+            ...deleteImages,
+            selected[idx]
+          ];
+        }
+      }
+      this.setState(update);
+    }
   }
 
-  removeImage = (image) => {
-    const { currentImages, newImages } = this.state;
-    const { _id } = image;
-    // set images to focus on and find index of img to delete
-    const key = image.new ? 'newImages' : 'currentImages';
-    const idx = this.state[key].map(image => image._id).indexOf(_id);
-
-    this.setState(prevState => ({
-        [key]: [ 
-          ...prevState[key].slice(0,idx), 
-          ...prevState[key].slice(idx+1) 
-        ], 
-        lastImageRemoved: _id
-      })
-    );
+  concatActiveImages = () => {
+    const { newImages, currentImages } = this.state;
+    return [...newImages, ...currentImages];
   }
 
   removeAddress = () => {
@@ -131,8 +158,7 @@ export default class ListingUploader extends Component {
           listing={true} 
           activeSync={this.updateActiveImages} 
           activeImages={[...currentImages, ...newImages]}
-          addActiveImage={this.addImage}
-          removeInactiveImage={this.removeImage}
+          edit={ {shiftImage: this.shiftImage} }
           lastImageRemoved={this.state.lastImageRemoved}
         />
       );
@@ -255,7 +281,14 @@ export default class ListingUploader extends Component {
 
           <Form.Field>
             <label htmlFor='newImages'>Images</label>
-            <ImageList update={update ? true : false} preview images={[...newImages, ...currentImages]} edit={ {remove: this.removeImage} }/>
+            <ImageList 
+              listing 
+              preview 
+              update={update ? true : false} 
+              activeImages={this.concatActiveImages()} 
+              images={this.concatActiveImages()} 
+              edit={ {shiftImage: this.shiftImage} }
+            />
             <Button.Group>
               <Button type='button' id='imageBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
               <Button type='button' id='imageUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />
