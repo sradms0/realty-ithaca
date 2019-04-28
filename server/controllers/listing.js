@@ -4,16 +4,19 @@ const Listing = require('../models/listing');
 const Image = require('../models/image');
 const { asyncHandler, notFound } = require('./util/err');
 
-// POST: create new listing
-exports.createOneListing = asyncHandler(async (req, res, next) => {
-  // update all image status to true
+const setImageStatus = async (status, ids) => {
   await Image.update(
-    { '_id': {$in: req.body.images} },
-    { status: true },
+    { '_id': {$in: ids} },
+    { status: status },
     { multi: true }
   );
+}
 
+// POST: create new listing
+exports.createOneListing = asyncHandler(async (req, res, next) => {
   const newListing = await Listing.create(req.body);
+  // images belong to a listing now
+  setImageStatus(true, req.body.images);
   return res.status(201).json(newListing);
 });
 
@@ -48,6 +51,7 @@ exports.updateOneListing = asyncHandler(async (req, res, next) => {
   // set to an empty array if undefined, so no errors are thrown 
   let { images } = req.body;
   if (!images) images = [];
+  else setImageStatus(true, images);
 
   // pass props and update
   const updatedListing  = await Listing.findOneAndUpdate(
@@ -63,5 +67,7 @@ exports.updateOneListing = asyncHandler(async (req, res, next) => {
 // DELETE: delete listing by id
 exports.deleteOneListing = asyncHandler(async (req, res, next) => {
   const deletedListing = await Listing.findOneAndDelete({ _id: req.params.id });
+  // images no longer belong to a listing
+  setImageStatus(false, deletedListing.images)
   return res.json( notFound(deletedListing, next) );
 });
