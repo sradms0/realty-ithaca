@@ -44,19 +44,21 @@ export default class ImageBrowser extends Component {
       activeSync, 
       lastImageRemoved, 
       resetLastImageRemoved,
-      addActiveImage,
-      removeInactiveImage
+      shiftImage,
+      edit
     } = this.props;
+
     const { images } = this.state;
     return (
       <ImageList 
         images={images} 
-        edit={ {remove: this.deleteImage} }
+        edit={{
+          shiftImage: edit ? edit.shiftImage : null, 
+          remove: this.deleteImage
+        }}
         upload={false}
         listing={ listing ? true : false }
         activeImages={activeImages}
-        addActiveImage={addActiveImage}
-        removeInactiveImage={removeInactiveImage}
         lastImageRemoved={lastImageRemoved}
         resetLastImageRemoved={resetLastImageRemoved}
       />

@@ -42,29 +42,26 @@ export default class ImageItem extends Component {
         this.setState(
           prevState => ({ active: !prevState.active}), 
           () => {
-            if (this.state.active) {
-              image.isNew = true;
-              addActiveImage(image);
-            }
-            else {
-              image.isNew = false;
-              removeInactiveImage(image);
-            }
+            if (this.state.active) edit.shiftImage(image, 'add');
+            else edit.shiftImage(image, 'remove');
           }
         );
-      } else if (className === 'remove') {
-        
+      } else if (className === 'browser-remove') {
         // delete from db 
         // if it is also active, current prospective image 
         // will be removed 
         edit.remove(image);
         if (this.activeImage()) {
-          removeInactiveImage(image);
+          edit.shiftImage(image, 'remove');
         }
+      } else if (className === 'preview-remove') {
+        edit.shiftImage(image, 'remove');
       }
-      // image is viewed elsewhere and is being deleted from db
-    } else if (className === 'remove') 
-        edit.remove(image);
+      return;
+    } 
+    // image is viewed elsewhere 
+    // (either previewed or in browser, without parent viewer)
+    edit.remove(image);
   }
 
   listingButton = () => {
@@ -88,10 +85,6 @@ export default class ImageItem extends Component {
 
   render() {
     const { image, upload, preview, listing, edit, update } = this.props;
-    if (update) {
-      image.isCurrent = !image.isNew ? true : false;
-      image.isNew = !image.isCurrent;
-    }
 
     // return the preview of an pre-uploaded image and enable removal
     if (upload || preview) {
@@ -104,8 +97,8 @@ export default class ImageItem extends Component {
               size='mini' 
               icon='minus'
               content='remove' 
-              className='remove'
-              onClick={() => edit.remove(image)}
+              className='preview-remove'
+              onClick={this.onClick}
             />
           </Item.Content>
         </Item>
@@ -142,7 +135,7 @@ export default class ImageItem extends Component {
               icon='delete'
               color='red'
               basic
-              className='remove'
+              className='browser-remove'
               onClick={this.onClick}
             />
           </div>
