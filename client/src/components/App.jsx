@@ -27,7 +27,7 @@ export default class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          <NavigationMenu />
+          <Route component={NavigationMenu}/>
           <Route path='/image' component={ImageRoutes} />
           <Route path='/address' component={AddressRoutes} />
           <Route path='/listing' component={ListingRoutes} />
