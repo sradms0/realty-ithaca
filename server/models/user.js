@@ -31,19 +31,22 @@ const UserSchema = new Schema({
 
 // authenticate input against db document
 UserSchema.statics.authenticate = async function(email, password, callback) {
+  const invalidCredentials = () => {
+    const error = new Error('Invalid user or password');
+    error.status = 401;
+    return error;
+  };
+
   try {
     const user = await this.findOne({ email: email });
-
     // pass error to cb if user does not exist
     if (!user) {
-      const err = new Error('User not found');
-      err.status = 401;
-      return callback(err);
+      return callback( invalidCredentials() );
     }
     //compare to hashed password in db
     bcrypt.compare(password, user.password, (err, res) => {
       if (res) return callback(null, user);
-      return callback();
+      return callback( invalidCredentials() );
     });
   } catch (err) {
     return callback(err);
