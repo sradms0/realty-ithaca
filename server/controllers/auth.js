@@ -6,7 +6,7 @@ exports.login = (req, res, next) => {
   if (email && password) {
     User.authenticate(email, password, (err, user) => {
       if (err || !user) return next(err);
-      return res.json({ email, password });
+      return res.json(user);
     });
   } else {
     const err = new Error('Email and password required');
