@@ -30,7 +30,7 @@ const UserSchema = new Schema({
 });
 
 // authenticate input against db document
-UserSchema.statics.authenticate = function(email, password, callback) {
+UserSchema.statics.authenticate = async function(email, password, callback) {
   try {
     const user = await this.findOne({ email: email });
 
