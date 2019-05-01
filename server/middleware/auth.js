@@ -15,7 +15,7 @@ exports.auth = (req, res, next) => {
 
   try {
     // verify token
-    const decoded = jwt.verify(token, process.env.SECRET)
+    const decoded = jwt.verify(token, process.env.SECRET);
     // add user from payload
     req.user = decoded;
     return next();
