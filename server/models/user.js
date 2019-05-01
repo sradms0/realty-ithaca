@@ -38,16 +38,16 @@ UserSchema.statics.authenticate = async function(email, password, callback) {
   };
 
   try {
+    // check if a user was found
     const user = await this.findOne({ email: email });
-    // pass error to cb if user does not exist
-    if (!user) {
-      return callback( invalidCredentials() );
-    }
-    //compare to hashed password in db
-    bcrypt.compare(password, user.password, (err, res) => {
-      if (res) return callback(null, user);
-      return callback( invalidCredentials() );
-    });
+    if (!user) return callback( invalidCredentials() );
+
+    // check if the user entered a valid password
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return callback( invalidCredentials() );
+
+    return callback(null, user);
+
   } catch (err) {
     return callback(err);
   }
