@@ -50,11 +50,11 @@ UserSchema.statics.authenticate = async function(email, password, callback) {
 
     // credentials are correct, assign a token and return with user
     const token = jwt.sign(
-      { id: user.id },
+      { _id: user._id },
       process.env.SECRET,
       { expiresIn: 3600 }
     )
-    return callback(null, { user, token });
+    return callback(null, { email: user.email, token });
 
   } catch (err) {
     return callback(err);
