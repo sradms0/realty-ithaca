@@ -3,6 +3,7 @@
 // load modules
 const express           = require('express');
 const bodyParser        = require('body-parser');
+const cookieParser      = require('cookie-parser');
 const morgan            = require('morgan');
 const mongoose          = require('mongoose');
 const cloudinary        = require('cloudinary');
@@ -53,11 +54,13 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Origin X-Requested-With, Content-Type, Accept');
   next();
 });
+app.use(cookieParser());
 
 // log and parse request body to json
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
+
 
 //test route
 app.get('/api', (req, res) => res.json({ message: `${new Date()}: ping successful` }));
