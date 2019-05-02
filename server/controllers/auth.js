@@ -19,7 +19,7 @@ exports.login = (req, res, next) => {
         { expiresIn: 3600 }
       )
       // assign jwt to cookie, and return email
-      res.cookie('jwt', token, { httpOnly: true, secure: true });
+      res.cookie('jwt', token, { httpOnly: true });
       return res.json({ email });
     });
   } else {
@@ -30,9 +30,7 @@ exports.login = (req, res, next) => {
 };
 
 exports.user = asyncHandler(async (req, res, next) => {
-  console.log(req.user);
   const user = await User.findOne({ _id: req.user._id })
     .select('-password');
-  console.log(user);
   return res.json(user);
 })
