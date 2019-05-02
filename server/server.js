@@ -11,7 +11,6 @@ const cloudinaryStorage = require('multer-storage-cloudinary');
 //const session           = require('express-session');
 const path              = require('path');
 const dotenv            = require('dotenv');
-const { auth }          = require('./middleware/auth');
 
 // load local environment variables
 dotenv.config();
@@ -65,8 +64,6 @@ app.get('/api', (req, res) => res.json({ message: `${new Date()}: ping successfu
 app.get('/', (req, res) => res.redirect('/api'));
 
 const authRoutes    = require('./routes/auth')    (app);
-
-app.use(auth);
 const imageRoutes   = require('./routes/image')   (app);
 const addressRoutes = require('./routes/address') (app);
 const listingRoutes = require('./routes/listing') (app);

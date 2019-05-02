@@ -1,14 +1,15 @@
 'use strict';
 
 const controller = require('../controllers/listing');
+const { auth } = require('../middleware/auth');
 
 module.exports = app => {
   app.route('/api/listing')
     .get(controller.readAllListings)
-    .post(controller.createOneListing);
+    .post(auth, controller.createOneListing);
 
   app.route('/api/listing/:id')
     .get(controller.readOneListing)
-    .put(controller.updateOneListing)
-    .delete(controller.deleteOneListing);
+    .put(auth, controller.updateOneListing)
+    .delete(auth, controller.deleteOneListing);
 }

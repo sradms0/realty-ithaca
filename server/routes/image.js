@@ -2,14 +2,15 @@
 
 const controller = require('../controllers/image');
 const { parser } = require('../server');
+const { auth } = require('../middleware/auth');
 
 module.exports = app => {
   app.route('/api/image')
-    .get(controller.readAllImages)
-    .post(parser.array('image'), controller.createImages)
-    .delete(controller.deleteAllImages);
+    .get(auth, controller.readAllImages)
+    .post([auth, parser.array('image')], controller.createImages)
+    .delete(auth, controller.deleteAllImages);
 
   app.route('/api/image/:id')
-    .get(controller.readOneImage)
-    .delete(controller.deleteOneImage);
+    .get(auth, controller.readOneImage)
+    .delete(auth, controller.deleteOneImage);
 }
