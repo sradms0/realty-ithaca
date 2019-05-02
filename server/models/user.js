@@ -2,8 +2,6 @@
 
 const mongoose  = require('mongoose');
 const bcrypt    = require('bcrypt');
-const jwt       = require('jsonwebtoken');
-const dotenv    = require('dotenv').config({ path: '../' });
 
 const { Schema } = mongoose;
 
@@ -48,13 +46,7 @@ UserSchema.statics.authenticate = async function(email, password, callback) {
     const match = await bcrypt.compare(password, user.password);
     if (!match) return callback( invalidCredentials() );
 
-    // credentials are correct, assign a token and return with user
-    const token = jwt.sign(
-      { _id: user._id },
-      process.env.SECRET,
-      { expiresIn: 3600 }
-    )
-    return callback(null, { email: user.email, token });
+    return callback(null, user);
 
   } catch (err) {
     return callback(err);
