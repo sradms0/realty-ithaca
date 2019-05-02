@@ -4,7 +4,7 @@ const jwt       = require('jsonwebtoken');
 const dotenv    = require('dotenv').config({ path: '../' });
 
 exports.auth = (req, res, next) => {
-  const token = req.header('x-auth-token');
+  const token = req.cookies.jwt;
 
   // check for a token
   if (!token) {
