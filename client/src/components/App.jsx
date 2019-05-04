@@ -7,6 +7,7 @@ import ImageRoutes from './Image/ImageRoutes';
 import AddressRoutes from './Address/AddressRoutes';
 import ListingRoutes from './Listing/ListingRoutes';
 
+import Login from './Login/Login';
 import NavigationMenu from './Header/NavigationMenu';
 
 export default class App extends Component {
@@ -27,6 +28,8 @@ export default class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
+          <Route path='/login' component={Login} />
+
           <Route component={NavigationMenu}/>
           <Route path='/image' component={ImageRoutes} />
           <Route path='/address' component={AddressRoutes} />
