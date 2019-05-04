@@ -8,7 +8,7 @@ export default class Login extends Component {
     email:'',
     password: '',
     
-    sucess: false
+    success: false
   }
 
   onChange = (e, { name }) => {
@@ -21,8 +21,10 @@ export default class Login extends Component {
   }
 
   login = async () => {
+    const { authorize } = this.props;
     try {
       await axios.post('/api/auth', this.state);
+      authorize();
       this.setState({ success: true });
     } catch(err) {
       console.log(err);
@@ -32,6 +34,7 @@ export default class Login extends Component {
   render() {
     const { success } = this.state;
     if (success) return ( <Redirect to='/listing'/> );
+    
     return (
       <div className='login-form'>
         <style>{`
