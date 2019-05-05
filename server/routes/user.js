@@ -1,6 +1,6 @@
 'use strict';
 
-const controller = require('../controllers/auth');
+const controller = require('../controllers/user');
 const { auth } = require('../middleware/auth');
 
 module.exports = app => {
