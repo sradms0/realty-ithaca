@@ -8,5 +8,5 @@ export default function PrivateRoutes({ authd, config }) {
     config.forEach(i => privateRoutes.push(<Route key={i.path} path={i.path} component={i.component}/>));
     return privateRoutes;
   }
-  return (<Redirect to='/login'/>);
+  return (<Redirect to='/admin/login'/>);
 }
