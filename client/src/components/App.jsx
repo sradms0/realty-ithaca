@@ -37,16 +37,16 @@ export default class App extends Component {
         <div className="App">
           <Switch>
             <Route 
-              path='/login' 
+              path='/admin/login' 
               render={() => (<Login authorize={this.authorize} />)} 
             />
 
             <PrivateRoutes 
               authd={authd} 
               config={[
-                  {path: '/image', component: ImageRoutes}, 
-                  {path: '/address', component: AddressRoutes}, 
-                  {path: '/listing', component: ListingRoutes}
+                  {path: '/admin/image', component: ImageRoutes}, 
+                  {path: '/admin/address', component: AddressRoutes}, 
+                  {path: '/admin/listing', component: ListingRoutes}
                 ]} 
             />
           </Switch>

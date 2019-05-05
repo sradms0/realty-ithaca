@@ -11,17 +11,17 @@ export default function NavigationMenu({ match, location }) {
 
   return (
     <Menu icon='labeled'>
-      <Menu.Item as={ NavLink } to={'/listing/browser'} isActive={() => isActive('listing')}>
+      <Menu.Item as={ NavLink } to={'/admin/listing/browser'} isActive={() => isActive('listing')}>
         <Icon name='home' />
         Listing
       </Menu.Item>
 
-    <Menu.Item as={ NavLink } to={'/address/browser'} isActive={() => isActive('address')}>
+    <Menu.Item as={ NavLink } to={'/admin/address/browser'} isActive={() => isActive('address')}>
         <Icon name='map signs' />
         Address
       </Menu.Item>
 
-    <Menu.Item as={ NavLink } to={'/image/browser'} isActive={() => isActive('image')}>
+    <Menu.Item as={ NavLink } to={'/admin/image/browser'} isActive={() => isActive('image')}>
         <Icon name='images' />
         Image
       </Menu.Item>

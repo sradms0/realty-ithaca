@@ -33,7 +33,7 @@ export default class Login extends Component {
 
   render() {
     const { success } = this.state;
-    if (success) return ( <Redirect to='/listing'/> );
+    if (success) return ( <Redirect to='/admin/listing'/> );
     
     return (
       <div className='login-form'>
