@@ -66,7 +66,7 @@ app.use(morgan('dev'));
 app.get('/api', (req, res) => res.json({ message: `${new Date()}: ping successful` }));
 app.get('/', (req, res) => res.redirect('/api'));
 
-const authRoutes    = require('./routes/auth')    (app);
+const authRoutes    = require('./routes/user')    (app);
 const imageRoutes   = require('./routes/image')   (app);
 const addressRoutes = require('./routes/address') (app);
 const listingRoutes = require('./routes/listing') (app);
