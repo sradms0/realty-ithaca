@@ -25,15 +25,14 @@ export default class Login extends Component {
     try {
       await axios.post('/api/user/login', this.state);
       authorize();
-      this.setState({ success: true });
     } catch(err) {
       console.log(err);
     }
   }
 
   render() {
-    const { success } = this.state;
-    if (success) return ( <Redirect to='/admin/listing'/> );
+    const { authd } = this.props;
+    if (authd) return ( <Redirect to='/admin/listing'/> );
     
     return (
       <div className='login-form'>

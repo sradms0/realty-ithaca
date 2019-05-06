@@ -18,16 +18,22 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    this.ping();
+    this.checkStatus();
   }
 
-  ping = async () => {
-    const res = await axios.get('/api');
-    this.setState({ message: res.data.message });
+  checkStatus = async () => {
+    try {
+      await axios.post('/api/user');
+      this.authorize();
+    } catch (err) {
+      console.log(err)
+    }
+
   }
 
   authorize = () => {
-    this.setState({ authd: true });
+    console.log('here');
+    this.setState(prevState => ({ authd: !prevState.authd }));
   }
 
   render() {
@@ -38,10 +44,11 @@ export default class App extends Component {
           <Switch>
             <Route 
               path='/admin/login' 
-              render={() => (<Login authorize={this.authorize} />)} 
+              render={() => (<Login authorize={this.authorize} authd={authd}/>)} 
             />
 
             <PrivateRoutes 
+              authorize={this.authorize}
               authd={authd} 
               config={[
                   {path: '/admin/image', component: ImageRoutes}, 
