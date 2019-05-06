@@ -1,4 +1,5 @@
 'user strict';
+
 const User              = require('../models/user');
 const jwt               = require('jsonwebtoken');
 const dotenv            = require('dotenv').config({ path: '../' });
@@ -28,6 +29,14 @@ exports.login = (req, res, next) => {
     return next(err);
   }
 };
+
+exports.logout = (req, res, next) => {
+  try {
+    return res.clearCookie('jwt').end();
+  } catch (err) {
+    next(err);
+  }
+}
 
 exports.user = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ _id: req.user._id })
