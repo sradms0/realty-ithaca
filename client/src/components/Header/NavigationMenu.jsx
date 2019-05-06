@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { Dropdown, Icon, Menu } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
 
@@ -7,6 +8,15 @@ export default function NavigationMenu({ match, location }) {
   const isActive = name => {
     const regExp = new RegExp(name);
     return regExp.test(location.pathname);
+  }
+  
+  const logout = async () => {
+    try {
+      await axios.post('/api/user/logout');
+      console.log('logged out');
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -26,7 +36,7 @@ export default function NavigationMenu({ match, location }) {
         Image
       </Menu.Item>
 
-      <Menu.Item as={ NavLink } to={'/admin/login'} position='right'>
+      <Menu.Item as={ NavLink } to={'/admin/login'} onClick={logout} position='right'>
         <Icon name='logout' />
         Logout
       </Menu.Item>
