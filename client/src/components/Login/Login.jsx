@@ -23,7 +23,7 @@ export default class Login extends Component {
   login = async () => {
     const { authorize } = this.props;
     try {
-      await axios.post('/api/auth', this.state);
+      await axios.post('/api/user/login', this.state);
       authorize();
       this.setState({ success: true });
     } catch(err) {
