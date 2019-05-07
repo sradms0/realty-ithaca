@@ -14,7 +14,7 @@ import NavigationMenu from './Header/NavigationMenu';
 export default class App extends Component {
   state = {
     message: '',
-    authd: false
+    authd: null
   }
 
   componentDidMount() {
@@ -42,6 +42,7 @@ export default class App extends Component {
 
   render() {
     const { authd } = this.state;
+    if (authd === null) return <div>Loading...</div>;
     return (
       <BrowserRouter>
         <div className="App">
