@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Dropdown, Icon, Menu } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
 
-export default function NavigationMenu({ match, location, authorize }) {
+export default function NavigationMenu({ match, location, authorizer, resolveAuthStatus }) {
   // pass to isActive NavLink prop to stay active for nested menus
   const isActive = name => {
     const regExp = new RegExp(name);
@@ -13,7 +13,7 @@ export default function NavigationMenu({ match, location, authorize }) {
   const logout = async () => {
     try {
       await axios.post('/api/user/logout');
-      authorize();
+      authorizer(false);
     } catch (err) {
       console.log(err);
     }
@@ -21,17 +21,17 @@ export default function NavigationMenu({ match, location, authorize }) {
 
   return (
     <Menu icon='labeled'>
-      <Menu.Item as={ NavLink } to={'/admin/listing/browser'} isActive={() => isActive('listing')}>
+      <Menu.Item as={ NavLink } to={'/admin/listing/browser'} onClick={resolveAuthStatus} isActive={() => isActive('listing')}>
         <Icon name='home' />
         Listing
       </Menu.Item>
 
-      <Menu.Item as={ NavLink } to={'/admin/address/browser'} isActive={() => isActive('address')}>
+      <Menu.Item as={ NavLink } to={'/admin/address/browser'} onClick={resolveAuthStatus} isActive={() => isActive('address')}>
         <Icon name='map signs' />
         Address
       </Menu.Item>
 
-      <Menu.Item as={ NavLink } to={'/admin/image/browser'} isActive={() => isActive('image')}>
+      <Menu.Item as={ NavLink } to={'/admin/image/browser'}  onClick={resolveAuthStatus} isActive={() => isActive('image')}>
         <Icon name='images' />
         Image
       </Menu.Item>

@@ -19,22 +19,26 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    this.checkStatus();
+    this.resolveAuthStatus();
   }
 
   checkStatus = async () => {
     try {
       await axios.post('/api/user');
-      this.authorize();
+      return true;
     } catch (err) {
       console.log(err)
+      return false;
     }
-
   }
 
-  authorize = () => {
-    console.log('here');
-    this.setState(prevState => ({ authd: !prevState.authd }));
+  resolveAuthStatus = async () => {
+    const status = await this.checkStatus();
+    this.authorizer(status);
+  }
+
+  authorizer = status => {
+    this.setState({ authd: status });
   }
 
   render() {
@@ -42,14 +46,14 @@ export default class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          {authd ? (<Route render={props => <NavigationMenu {...props} authd={authd} authorize={this.authorize}/>}/>): null}
+          {authd ? (<Route render={props => <NavigationMenu {...props} authd={authd} authorizer={this.authorizer}/>}/>): null}
           <Switch>
             <PrivateRoute path='/admin/image'   authd={authd} component={ImageRoutes}/>
             <PrivateRoute path='/admin/address' authd={authd} component={AddressRoutes}/>
             <PrivateRoute path='/admin/listing' authd={authd} component={ListingRoutes}/>
             <Route 
               path='/admin/login' 
-              render={() => (<Login authorize={this.authorize} authd={authd}/>)} 
+              render={() => (<Login authorizer={this.authorizer} authd={authd}/>)} 
             />
           </Switch>
         </div>

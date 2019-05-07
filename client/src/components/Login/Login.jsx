@@ -21,10 +21,10 @@ export default class Login extends Component {
   }
 
   login = async () => {
-    const { authorize } = this.props;
+    const { authorizer } = this.props;
     try {
       await axios.post('/api/user/login', this.state);
-      authorize();
+      authorizer(true);
     } catch(err) {
       console.log(err);
     }
