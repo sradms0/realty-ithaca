@@ -6,7 +6,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import ImageRoutes from './Image/ImageRoutes';
 import AddressRoutes from './Address/AddressRoutes';
 import ListingRoutes from './Listing/ListingRoutes';
-//import PrivateRoutes from './Private/PrivateRoutes';
 import PrivateRoute from './Private/PrivateRoute';
 
 import Login from './Login/Login';
@@ -46,7 +45,16 @@ export default class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          {authd ? (<Route render={props => <NavigationMenu {...props} authd={authd} resolveAuthStatus={this.resolveAuthStatus} authorizer={this.authorizer}/>}/>): null}
+          <Route 
+            render={props => (
+              <NavigationMenu {...props} 
+                authd={authd} 
+                resolveAuthStatus={this.resolveAuthStatus} 
+                authorizer={this.authorizer}
+              />
+            )}
+          />
+
           <Switch>
             <PrivateRoute path='/admin/image'   authd={authd} component={ImageRoutes}/>
             <PrivateRoute path='/admin/address' authd={authd} component={AddressRoutes}/>

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Dropdown, Icon, Menu } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
 
-export default function NavigationMenu({ match, location, authorizer, resolveAuthStatus }) {
+export default function NavigationMenu({ match, location, authd, authorizer, resolveAuthStatus }) {
   // pass to isActive NavLink prop to stay active for nested menus
   const isActive = name => {
     const regExp = new RegExp(name);
@@ -19,6 +19,7 @@ export default function NavigationMenu({ match, location, authorizer, resolveAut
     }
   }
 
+  if (!authd) return null;
   return (
     <Menu icon='labeled'>
       <Menu.Item as={ NavLink } to={'/admin/listing/browser'} onClick={resolveAuthStatus} isActive={() => isActive('listing')}>
