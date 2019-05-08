@@ -46,7 +46,7 @@ export default class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
-          <Route path='/admin/app'
+          <Route 
             render={props => (
               <NavigationMenu {...props} 
                 authd={authd} 
@@ -57,10 +57,9 @@ export default class App extends Component {
           />
 
           <Switch>
-            <PrivateRoute path='/admin/app/image'   authd={authd} component={ImageRoutes}/>
-            <PrivateRoute path='/admin/app/address' authd={authd} component={AddressRoutes}/>
-            <PrivateRoute path='/admin/app/listing' authd={authd} component={ListingRoutes}/>
-
+            <PrivateRoute path='/admin/image'   authd={authd} component={ImageRoutes}/>
+            <PrivateRoute path='/admin/address' authd={authd} component={AddressRoutes}/>
+            <PrivateRoute path='/admin/listing' authd={authd} component={ListingRoutes}/>
             <Route 
               path='/admin/login' 
               render={() => (<Login authorizer={this.authorizer} authd={authd}/>)} 

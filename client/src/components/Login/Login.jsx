@@ -32,7 +32,7 @@ export default class Login extends Component {
 
   render() {
     const { authd } = this.props;
-    if (authd) return ( <Redirect to='/admin/app/listing'/> );
+    if (authd) return ( <Redirect to='/admin/listing'/> );
     
     return (
       <div className='login-form'>
