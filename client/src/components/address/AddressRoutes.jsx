@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
  
 import AddressUploader from './AddressUploader';
 import AddressBrowser from './AddressBrowser';
-import FeatureMenu from '../Header/FeatureMenu';
+import FeatureMenu from '../header/FeatureMenu';
  
 
 export default function AddressRoutes({ match }) {

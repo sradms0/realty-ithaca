@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 
 import ImageUploader from './ImageUploader';
 import ImageBrowser from './ImageBrowser';
-import FeatureMenu from '../Header/FeatureMenu';
+import FeatureMenu from '../header/FeatureMenu';
 
 export default function ImageRoutes({ match }) {
   return (

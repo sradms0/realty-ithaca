@@ -3,13 +3,13 @@ import axios from 'axios';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 // nested routing components
-import ImageRoutes from './Image/ImageRoutes';
-import AddressRoutes from './Address/AddressRoutes';
-import ListingRoutes from './Listing/ListingRoutes';
-import PrivateRoute from './Private/PrivateRoute';
+import ImageRoutes from './image/ImageRoutes';
+import AddressRoutes from './address/AddressRoutes';
+import ListingRoutes from './listing/ListingRoutes';
+import PrivateRoute from './private/PrivateRoute';
 
-import Login from './Login/Login';
-import NavigationMenu from './Header/NavigationMenu';
+import Login from './login/Login';
+import NavigationMenu from './header/NavigationMenu';
 
 export default class App extends Component {
   state = {

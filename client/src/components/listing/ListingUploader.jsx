@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Button, Container, Form, Header, Message, Icon } from 'semantic-ui-react';
 import axios from 'axios';
 
-import AddressBrowser from '../Address/AddressBrowser';
-import AddressUploader from '../Address/AddressUploader';
-import AddressList from '../Address/AddressList';
-import ImageBrowser from '../Image/ImageBrowser';
-import ImageUploader from '../Image/ImageUploader';
-import ImageList from '../Image/ImageList';
+import AddressBrowser from '../address/AddressBrowser';
+import AddressUploader from '../address/AddressUploader';
+import AddressList from '../address/AddressList';
+import ImageBrowser from '../image/ImageBrowser';
+import ImageUploader from '../image/ImageUploader';
+import ImageList from '../image/ImageList';
 
 export default class ListingUploader extends Component {
   state = {

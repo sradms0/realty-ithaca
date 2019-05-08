@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 
 import ListingUploader from './ListingUploader';
 import ListingBrowser from './ListingBrowser';
-import FeatureMenu from '../Header/FeatureMenu';
+import FeatureMenu from '../header/FeatureMenu';
  
 export default function ListingRoutes({ match }) {
   return (
