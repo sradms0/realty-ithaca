@@ -61,7 +61,6 @@ export default class ListingUploader extends Component {
     const { _id } = image;
     const key = image.status ? 'currentImages' : 'newImages';
     const selected = this.state[key];
-    console.log(selected, key)
 
     let update;
     let idx;
@@ -215,15 +214,20 @@ export default class ListingUploader extends Component {
 
   onSubmit = async e => {
     e.preventDefault();
+    const filterIds = child => child.map(i => i._id);
     const { address, newImages, currentImages, deleteImages } = this.state;
     const { update } = this.props;
 
-    let images;
+    // prepare image ids to send to server
+    const images = {newImages: filterIds(newImages)} ;
+
     try {
       // update existing listing if this is an update
       // otherwise a new listing is being added
       if (update) {
-        const res = await axios.put(`/api/listing/${update.listing._id}`, { address, images: newImages });
+        // add deleteImages ids to image obj for updating
+        images.deleteImages = filterIds(deleteImages);
+        const res = await axios.put(`/api/listing/${update.listing._id}`, { address, images });
         // update state/form fields and parent component to show update
         this.updateState(res.data);
         update.updateParentDisplay();

@@ -48,19 +48,36 @@ exports.updateOneListing = asyncHandler(async (req, res, next) => {
   if (address) updates.address = address;
   if (sold !== undefined) updates.sold = sold;
 
-  // set to an empty array if undefined, so no errors are thrown 
+  // set image children to empty arrays if image is undefined, so no errors are thrown 
   let { images } = req.body;
-  if (!images) images = [];
-  else setImageStatus(true, images);
+  let newImages = null;
+  let deleteImages = null;
 
-  // pass props and update
-  const updatedListing  = await Listing.findOneAndUpdate(
+  if (!images) {
+    newImages = [];
+    deleteImages = [];
+  } else {
+    newImages = images.newImages;
+    deleteImages = images.deleteImages;
+    setImageStatus(true, newImages);
+    setImageStatus(false, deleteImages);
+  }
+
+  // * pass props and update *//
+  //   cant push and pull on same path in same operation, 
+  //   so separate queries have to be performed...
+  await Listing.findOneAndUpdate(
     {_id: req.params.id}, 
-    {$set:updates, $push:{'images': { $each: images }}}, 
+    {$set:updates, $push:{'images': { $each: newImages }}}
+  )
+  const updatedListing = await Listing.findOneAndUpdate(
+    {_id: req.params.id}, 
+    {$pull:{'images': {$in: deleteImages}}},
     {new: true}
   )
   .populate('address')
   .populate('images');
+
   return res.json( notFound(updatedListing, next) );
 });
 
