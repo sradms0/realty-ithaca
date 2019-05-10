@@ -4,13 +4,13 @@ const Listing = require('../models/listing');
 const Image = require('../models/image');
 const { asyncHandler, notFound } = require('./util/err');
 
-const setImageStatus = async (status, ids) => {
+const setImageStatus = asyncHandler(async (status, ids) => {
   await Image.update(
     { '_id': {$in: ids} },
     { status: status },
     { multi: true }
   );
-}
+});
 
 // POST: create new listing
 exports.createOneListing = asyncHandler(async (req, res, next) => {
