@@ -9,59 +9,46 @@ export default class ImageItem extends Component {
   // updating based on prospective image from listing 
   // uploader is removed from the previewed list
   static getDerivedStateFromProps(props, state) {
-    const { 
-      image,
-      listing,
-      lastImageRemoved, 
-      resetLastImageRemoved,
-      removeInactiveImage
-    } = props;
+    const { config, image } = props;
 
     // if this image has been removed from the preview
     // list of listing, then deactivate the image here
-    if (listing && lastImageRemoved === image._id) {
-      resetLastImageRemoved();
+    if (config.view.listing && config.lastImageRemoved === image._id) {
+      config.resetLastImageRemoved();
       return ({ active: false });
     } else return null;
   }
 
   onClick = (e, { className }) => {
-    const { 
-      image, 
-      edit,
-      upload,
-      listing, 
-      addActiveImage,
-      removeInactiveImage
-    } = this.props;
+    const { config, image } = this.props;
 
     // base click on class of button
-    if (listing) {
+    if (config.view.listing) {
       if (className === 'add') {
         // prospective image added to a new listing
         this.setState(
           prevState => ({ active: !prevState.active}), 
           () => {
-            if (this.state.active) edit.shiftImage(image, 'add');
-            else edit.shiftImage(image, 'remove');
+            if (this.state.active) config.shiftImage(image, 'add');
+            else config.shiftImage(image, 'remove');
           }
         );
       } else if (className === 'browser-remove') {
         // delete from db 
         // if it is also active, current prospective image 
         // will be removed 
-        edit.remove(image);
+        config.remove(image);
         if (this.activeImage()) {
-          edit.shiftImage(image, 'remove');
+          config.shiftImage(image, 'remove');
         }
       } else if (className === 'preview-remove') {
-        edit.shiftImage(image, 'remove');
+        config.shiftImage(image, 'remove');
       }
       return;
     } 
     // image is viewed elsewhere 
     // (either previewed or in browser, without parent viewer)
-    edit.remove(image);
+    config.remove(image);
   }
 
   listingButton = () => {
@@ -78,16 +65,16 @@ export default class ImageItem extends Component {
   };
 
   activeImage() {
-    const { image, activeImages, update } = this.props;
-    const idx = activeImages.map(i => i._id).indexOf(image._id);
+    const { config, image } = this.props;
+    const idx = config.activeImages.map(i => i._id).indexOf(image._id);
     return idx > -1;
   }
 
   render() {
-    const { image, upload, preview, listing, edit, update } = this.props;
+    const { config, image } = this.props;
 
     // return the preview of an pre-uploaded image and enable removal
-    if (upload || preview) {
+    if (config.view.upload || config.view.preview) {
       return (
         <Item>
           <Item.Image size='tiny' src={image.url} />
@@ -107,13 +94,13 @@ export default class ImageItem extends Component {
 
     // return the uploaded view of an image
     // provide maximize and delete buttons
-    const buttonCount = listing ? 'three' : 'two';
+    const buttonCount = config.view.listing ? 'three' : 'two';
     return (
       <Card>
         <Image src={image.url}/>
         <Card.Content extra>
           <div className={`ui ${buttonCount} buttons`}>
-            {listing ? this.listingButton() : null}
+            {config.view.listing ? this.listingButton() : null}
             {/* show large view of image */}
             <Modal 
               trigger={

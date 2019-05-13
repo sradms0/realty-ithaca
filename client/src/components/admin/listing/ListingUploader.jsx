@@ -153,12 +153,13 @@ export default class ListingUploader extends Component {
     if (imageBrowserToggled) {
       return (
         <ImageBrowser 
-          resetLastImageRemoved={this.resetLastImageRemoved}
-          listing={true} 
-          activeSync={this.updateActiveImages} 
-          activeImages={[...currentImages, ...newImages]}
-          edit={ {shiftImage: this.shiftImage} }
-          lastImageRemoved={this.state.lastImageRemoved}
+          config={{
+            view: {listing: true, image: true},
+            resetLastImageRemoved: this.resetLastImageRemoved,
+            activeImages: this.concatActiveImages(),
+            shiftImage: this.shiftImage,
+            lastImageRemoved: this.state.lastImageRemoved
+          }}
         />
       );
     }
@@ -286,12 +287,13 @@ export default class ListingUploader extends Component {
           <Form.Field>
             <label htmlFor='newImages'>Images</label>
             <ImageList 
-              listing 
-              preview 
-              update={update ? true : false} 
-              activeImages={this.concatActiveImages()} 
-              images={this.concatActiveImages()} 
-              edit={ {shiftImage: this.shiftImage} }
+              config={{
+                view:{listing: true, preview: true},
+                update: update ? true : false,
+                activeImages: this.concatActiveImages(),
+                images: this.concatActiveImages(),
+                shiftImage: this.shiftImage
+              }}
             />
             <Button.Group>
               <Button type='button' id='imageBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />

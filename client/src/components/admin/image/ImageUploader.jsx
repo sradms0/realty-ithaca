@@ -73,10 +73,12 @@ export default class ImageUploader extends Component {
   // show current list of files to upload
   previewList = () => (
     <ImageList 
-      images={this.state.srcs} 
-      size='tiny' 
-      edit={ {remove: this.removeForUpload} }
-      upload={true}
+      config={{
+        view: {upload: true},
+        images: this.state.srcs,
+        size: 'tiny',
+        remove: this.removeForUpload
+      }}
     />
   );
 

@@ -38,30 +38,15 @@ export default class ImageBrowser extends Component {
   }
 
   render() {
-    const { 
-      listing, 
-      activeImages, 
-      activeSync, 
-      lastImageRemoved, 
-      resetLastImageRemoved,
-      shiftImage,
-      edit
-    } = this.props;
-
     const { images } = this.state;
-    return (
-      <ImageList 
-        images={images} 
-        edit={{
-          shiftImage: edit ? edit.shiftImage : null, 
-          remove: this.deleteImage
-        }}
-        upload={false}
-        listing={ listing ? true : false }
-        activeImages={activeImages}
-        lastImageRemoved={lastImageRemoved}
-        resetLastImageRemoved={resetLastImageRemoved}
-      />
-    );
+    let { config } = this.props;
+
+    // if browser has no parent, then create config
+    // add to new/pre-existing config
+    if (!config) config = {view: {image: true}};
+    config.remove = this.deleteImage;
+    config.images = images;
+
+    return (<ImageList config={config}/>);
   }
 }

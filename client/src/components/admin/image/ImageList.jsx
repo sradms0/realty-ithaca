@@ -12,44 +12,23 @@ export default class ImageList extends Component {
   }
 
   imageItems = () => {
-    const { 
-      images, 
-      upload, 
-      preview, 
-      update,
-      listing, 
-      activeImages, 
-      lastImageRemoved,
-      resetLastImageRemoved,
-      addActiveImage,
-      removeInactiveImage,
-      edit 
-    } = this.props;
+    const { config } = this.props;
     return (
-      images.map((image, i) => (
-         <ImageItem 
-           image={image} 
-           edit={edit}
-           upload={upload}
-           preview={preview}
-           update={update}
-           resetLastImageRemoved={resetLastImageRemoved}
-           lastImageRemoved={lastImageRemoved}
-           listing={listing}
-           addActiveImage={addActiveImage}
-           removeInactiveImage={removeInactiveImage}
-           activeImages={activeImages}
-           toggleRefresh={this.toggleRefresh}
-           key={image._id ? image._id+i : image.url+i}
-         />
+      config.images.map((image, i) => (
+        <ImageItem 
+          config={config}
+          image={image}
+          toggleRefresh={this.toggleRefresh}
+          key={image._id ? image._id+i : image.url+i}
+        />
       ))
     );
   }
 
   render() {
-    const { upload, preview } = this.props;
+    const { config } = this.props;
     // return a list according to view-type
-    if (upload || preview) return (<Item.Group divided>{this.imageItems()}</Item.Group>);
-    return (<Card.Group itemsPerRow={4}>{this.imageItems()}</Card.Group>);
+    if (config.view.upload || config.view.preview) return (<Item.Group divided>{this.imageItems()}</Item.Group>);
+    else if (config.view.image) return (<Card.Group itemsPerRow={4}>{this.imageItems()}</Card.Group>);
   }
 }
