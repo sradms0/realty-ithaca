@@ -14,8 +14,8 @@ export default class AdddressUploader extends Component {
   }
 
   componentDidMount() {
-    const { update } = this.props;
-    if (update) this.preFill();
+    const { config } = this.props;
+    if (config && config.update) this.preFill();
   }
 
   updateState = (update=null) => {
@@ -43,7 +43,7 @@ export default class AdddressUploader extends Component {
 
   // fill state with address data if this form is for updating
   preFill = () => {
-    const { address } = this.props.update;
+    const { address } = this.props;
     this.setState({ 
       street: address.street,
       city: address.city,
@@ -62,20 +62,21 @@ export default class AdddressUploader extends Component {
     e.preventDefault();
     const { street, city, zip } = this.state;
     const { active, update, listing } = this.props;
+    const { address, config } = this.props;
 
     try {
       // update existing address if this is an update
       // otherwise a new address is being added
-      if (update) {
-        const res = await axios.put(`/api/address/${update.address._id}`, { street, city, zip });
+      if (config.update) {
+        const res = await axios.put(`/api/address/${address._id}`, { street, city, zip });
         // update state/form fields and parent component to show update
         this.updateState(res.data);
-        update.updateParentDisplay();
+        config.updateParentDisplay();
 
         // if the update is on an active address listing uploader,
         //  then be sure to update that active address, too
-        if (listing && active) {
-          update.updateSiblingDisplay(res.data);
+        if (config.view.listing && active) {
+          config.updateSiblingDisplay(res.data);
         }
         
       } else {

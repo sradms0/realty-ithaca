@@ -49,33 +49,19 @@ export default class AddressBrowser extends Component {
   }
 
   render() {
-    const { 
-      listing, 
-      addActiveAddress,
-      removeInactiveAddress,
-      activeAddress, 
-      updateSiblingDisplay,
-      activeSync,
-      lastAddressRemoved, 
-      resetLastAddressRemoved
-    } = this.props;
     const { addresses } = this.state;
+    let { config } = this.props;
+    // if browser has no parent, then create config
+    // add to new/pre-existing config
+    if (!config) config = {view: {address: true}};
+    config.remove = this.deleteAddress;
+    config.addresses = addresses;
+    config.updateParentDisplay = this.toggleUpdate
+
     return (
       <div>
         <AddressList 
-          addresses={addresses}
-          edit={{
-            updateParentDisplay: this.toggleUpdate, 
-            updateSiblingDisplay: updateSiblingDisplay, 
-            remove: this.deleteAddress
-          }}
-          listing={listing}
-          activeSync={activeSync} 
-          activeAddress={activeAddress}
-          addActiveAddress={addActiveAddress}
-          removeInactiveAddress={removeInactiveAddress}
-          lastAddressRemoved={lastAddressRemoved}
-          resetLastAddressRemoved={resetLastAddressRemoved}
+          config={config}
         />
       </div>
     );

@@ -166,11 +166,13 @@ export default class ListingUploader extends Component {
     if (this.state.addressBrowserToggled) {
       return (
         <AddressBrowser 
-          addActiveAddress={this.addAddress}
-          removeInactiveAddress={this.removeAddress}
-          activeAddress={this.state.address}
-          activeSync={this.updateActiveAddress} 
-          listing={true}
+          config={{
+            view: {listing: true, address: true},
+            activeAddress: this.state.address,
+            addActiveAddress: this.addAddress,
+            removeInactiveAddress: this.removeAddress,
+            activeSync: this.updateActiveAddress 
+          }}
           lastAddressRemoved={this.state.lastAddressRemoved}
           resetLastAddressRemoved={this.resetLastAddressRemoved}
           updateSiblingDisplay={this.updateAddress}
@@ -277,7 +279,12 @@ export default class ListingUploader extends Component {
 
           <Form.Field>
             <label htmlFor='address'>Address</label>
-            <AddressList preview addresses={address ? [address] : []} edit={ {remove: this.removeAddress} }/>
+            <AddressList preview addresses={address ? [address] : []} 
+              config={{
+                view:{listing: true, preview: true},
+                remove: this.removeAddress
+              }}
+            />
             <Button.Group>
               <Button type='button' id='addressBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
               <Button type='button' id='addressUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />

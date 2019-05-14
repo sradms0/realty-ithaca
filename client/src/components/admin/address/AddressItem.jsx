@@ -5,20 +5,14 @@ import AddressUploader from './AddressUploader';
 export default class AddressItem extends Component {
   state = {
     editToggled: false,
-    active: this.props.listing && this.activeAddress()
+    active: this.props.config.view.listing && this.activeAddress()
   }
 
   static getDerivedStateFromProps(props, state) {
-    const {
-      activeAddress,
-      address,
-      listing,
-      lastAddressRemoved,
-      resetLastAddressRemoved
-    } = props;
+    const { address, config } = props;
 
-    if (listing && lastAddressRemoved === address._id) {
-      resetLastAddressRemoved();
+    if (config.view.listing && config.lastAddressRemoved === address._id) {
+      config.resetLastAddressRemoved();
       return ({ active: false });
     }
     return null;
@@ -29,32 +23,26 @@ export default class AddressItem extends Component {
   }
 
   onClick = (e, { className }) => {
-    const { 
-      edit,
-      listing,
-      address,
-      addActiveAddress,
-      removeInactiveAddress
-    } = this.props;
+    const { config, address } = this.props;
 
     // base click on class of button
-    if (listing) {
+    if (config.view.listing) {
       if (className === 'add') {
         // prospective image added to a new listing
         this.setState(
           prevState => ({ active: !prevState.active}), 
           () => {
-            if (this.state.active) addActiveAddress(address);
-            else removeInactiveAddress();
+            if (this.state.active) config.addActiveAddress(address);
+            else config.removeInactiveAddress();
           }
         );
       } else if (className === 'remove') {
         // delete from db  and from list if active
-        edit.remove(address);
-        removeInactiveAddress(address);
+        config.remove(address);
+        config.removeInactiveAddress(address);
       } 
     } else if (className === 'remove') {
-        edit.remove(address);
+        config.remove(address);
       }
   }
 
@@ -79,20 +67,33 @@ export default class AddressItem extends Component {
     />
   )
 
+  addressUpdate = () => {
+    const { address, config } = this.props;
+    const { active } = this.state;
+    config.update = true;
+    return (
+      <AddressUploader 
+        config={config}
+        address={address}
+        active={active}
+      />
+    );
+  }
+
   prevActiveAddress() {
-    const { prevActiveAddress, address } = this.props;
+    const { config, address } = this.props;
     // check to see if there is an active address
-    if (prevActiveAddress) {
-      return prevActiveAddress._id === address._id;
+    if (config.prevActiveAddress) {
+      return config.prevActiveAddress._id === address._id;
     }
     return false;
   }
 
   activeAddress() {
-    const { activeAddress, address } = this.props;
+    const { config, address } = this.props;
     // check to see if there is an active address
-    if (activeAddress) {
-      return activeAddress._id === address._id;
+    if (config.activeAddress) {
+      return config.activeAddress._id === address._id;
     }
     return false;
       
@@ -102,14 +103,14 @@ export default class AddressItem extends Component {
   // otherwise if there is an active address, and this is the one, add +/-
   render() {
     const { active, editToggled } = this.state;
-    const { edit, address, listing, preview } = this.props;
+    const { config, address } = this.props;
     const addressString = `${address.street}, ${address.city} ${address.zip}`;
     return (
       <List.Item>
         <List.Content floated='right'>
           <Button.Group>
-            {listing ? this.listingButton() : null}
-            {!preview ? this.editButton() : null}
+            {config.view.listing ? this.listingButton() : null}
+            {!config.view.preview ? this.editButton() : null}
             <Button className='remove' onClick={this.onClick} basic color='red' icon='delete'/>
           </Button.Group>
         </List.Content>
@@ -124,15 +125,7 @@ export default class AddressItem extends Component {
           ? (
               <List.Content>
                 <Container>
-                  <AddressUploader 
-                    listing={listing}
-                    active={active}
-                    update={{ 
-                      updateParentDisplay: edit.updateParentDisplay, 
-                      updateSiblingDisplay: edit.updateSiblingDisplay, 
-                      address: address
-                    }}
-                  />
+                  {this.addressUpdate()}
                 </Container>
               </List.Content>
           ) : null
