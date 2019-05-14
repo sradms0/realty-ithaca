@@ -37,9 +37,13 @@ export default class AddressItem extends Component {
           }
         );
       } else if (className === 'remove') {
-        // delete from db  and from list if active
-        config.remove(address);
-        config.removeInactiveAddress(address);
+        // active address removed from preview
+        // or removed from browser
+        if (config.view.preview) config.removeInactiveAddress(address);
+        else {
+          config.remove(address);
+          config.removeInactiveAddress(address);
+        }
       } 
     } else if (className === 'remove') {
         config.remove(address);
