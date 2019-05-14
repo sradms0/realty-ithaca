@@ -109,7 +109,7 @@ export default class AddressItem extends Component {
       <List.Item>
         <List.Content floated='right'>
           <Button.Group>
-            {config.view.listing ? this.listingButton() : null}
+            {config.view.listing && !config.view.preview ? this.listingButton() : null}
             {!config.view.preview ? this.editButton() : null}
             <Button className='remove' onClick={this.onClick} basic color='red' icon='delete'/>
           </Button.Group>

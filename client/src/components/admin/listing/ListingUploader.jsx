@@ -279,10 +279,11 @@ export default class ListingUploader extends Component {
 
           <Form.Field>
             <label htmlFor='address'>Address</label>
-            <AddressList preview addresses={address ? [address] : []} 
+            <AddressList 
               config={{
                 view:{listing: true, preview: true},
-                remove: this.removeAddress
+                addresses: address ? [address] : [],
+                remove: this.removeAddress,
               }}
             />
             <Button.Group>

@@ -5,7 +5,7 @@ import AddressItem from './AddressItem';
 export default class AddressList extends Component {
   state = {
     // for listings, only one can be active
-    active: this.props.config.addresses[0], 
+    active: this.props.config.view.listing ? this.props.config.addresses[0] : null
   }
 
   addressItems = () => {
