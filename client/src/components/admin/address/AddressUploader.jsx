@@ -61,13 +61,14 @@ export default class AdddressUploader extends Component {
   onSubmit = async e => {
     e.preventDefault();
     const { street, city, zip } = this.state;
-    const { active, update, listing } = this.props;
+    const { active, listing } = this.props;
     const { address, config } = this.props;
+    const update = config && config.view.update;
 
     try {
       // update existing address if this is an update
       // otherwise a new address is being added
-      if (config.update) {
+      if (update) {
         const res = await axios.put(`/api/address/${address._id}`, { street, city, zip });
         // update state/form fields and parent component to show update
         this.updateState(res.data);
