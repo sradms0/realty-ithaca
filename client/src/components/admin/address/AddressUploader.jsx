@@ -98,7 +98,8 @@ export default class AdddressUploader extends Component {
 
   render() {
     const { street, city, zip } = this.state;
-    const { update } = this.props;
+    const { config } = this.props;
+    const update = config && config.view.update;
     return (
       <Form 
         error={this.state.error ? true : false} 

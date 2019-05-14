@@ -53,10 +53,10 @@ export default class AddressBrowser extends Component {
     let { config } = this.props;
     // if browser has no parent, then create config
     // add to new/pre-existing config
-    if (!config) config = {view: {address: true}};
+    if (!config) config = {view: {address: true, update: true}};
     config.remove = this.deleteAddress;
     config.addresses = addresses;
-    config.updateParentDisplay = this.toggleUpdate
+    config.updateParentDisplay = this.toggleUpdate;
 
     return (
       <div>
