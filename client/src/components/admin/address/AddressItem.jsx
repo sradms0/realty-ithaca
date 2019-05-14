@@ -70,7 +70,6 @@ export default class AddressItem extends Component {
   addressUpdate = () => {
     const { address, config } = this.props;
     const { active } = this.state;
-    config.update = true;
     return (
       <AddressUploader 
         config={config}

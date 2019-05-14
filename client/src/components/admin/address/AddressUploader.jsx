@@ -15,7 +15,7 @@ export default class AdddressUploader extends Component {
 
   componentDidMount() {
     const { config } = this.props;
-    if (config && config.update) this.preFill();
+    if (config && config.view.update) this.preFill();
   }
 
   updateState = (update=null) => {
