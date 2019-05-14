@@ -285,7 +285,7 @@ export default class ListingUploader extends Component {
               config={{
                 view:{listing: true, preview: true},
                 addresses: address ? [address] : [],
-                remove: this.removeAddress,
+                removeInactiveAddress: this.removeAddress,
               }}
             />
             <Button.Group>
