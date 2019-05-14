@@ -9,22 +9,7 @@ export default class AddressList extends Component {
   }
 
   addressItems = () => {
-    const { 
-      addresses, 
-      lastAddressRemoved,
-      resetLastAddressRemoved,
-      addActiveAddress,
-      removeInactiveAddress,
-      activeAddress, 
-      activeSync, 
-      listing, 
-      preview,
-      edit 
-    } = this.props;
-
     const { config } = this.props;
-    const { active, lastActive } = this.state;
-
     return (
       config.addresses.map(address => (
         <AddressItem 
