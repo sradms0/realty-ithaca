@@ -107,11 +107,14 @@ export default class ListingUploader extends Component {
   }
 
   removeAddress = () => {
-    this.setState(prevState => ({ 
-        address: null,  
-        lastAddressRemoved: prevState.address._id
-      })
-    );
+    const { address } = this.state;
+    if (address) {
+      this.setState(prevState => ({ 
+          address: null,  
+          lastAddressRemoved: prevState.address._id
+        })
+      );
+    }
   }
 
   resetLastImageRemoved = () => {
