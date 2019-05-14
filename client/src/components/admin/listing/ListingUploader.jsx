@@ -109,11 +109,11 @@ export default class ListingUploader extends Component {
   removeAddress = () => {
     const { address } = this.state;
     if (address) {
-      this.setState(prevState => ({ 
-          address: null,  
-          lastAddressRemoved: prevState.address._id
-        })
-      );
+    this.setState(prevState => ({ 
+        address: null,  
+        lastAddressRemoved: prevState.address._id
+      })
+    );
     }
   }
 
@@ -174,11 +174,10 @@ export default class ListingUploader extends Component {
             activeAddress: this.state.address,
             addActiveAddress: this.addAddress,
             removeInactiveAddress: this.removeAddress,
-            activeSync: this.updateActiveAddress 
+            updateSiblingDisplay: this.updateAddress
           }}
           lastAddressRemoved={this.state.lastAddressRemoved}
           resetLastAddressRemoved={this.resetLastAddressRemoved}
-          updateSiblingDisplay={this.updateAddress}
         />
       );
     }

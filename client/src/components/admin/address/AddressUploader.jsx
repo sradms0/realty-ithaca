@@ -87,6 +87,7 @@ export default class AdddressUploader extends Component {
       }
       console.log('success');
     } catch(err) {
+      console.log(err);
       // clear success in case another address 
       // is added and causes errors; the previous
       // success message will be cleared this way
