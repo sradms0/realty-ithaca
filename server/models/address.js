@@ -42,5 +42,14 @@ AddressSchema.index(
   {unique: true}
 );
 
+// define an address string
+AddressSchema.virtual('string').get(function() {
+  return `${this.street}, ${this.city} ${this.zip}`;
+});
+
+// allow for virtual to be returned in json
+AddressSchema.set('toJSON', { virtuals: true })
+
+
 // export address model
 module.exports = mongoose.model('address', AddressSchema)
