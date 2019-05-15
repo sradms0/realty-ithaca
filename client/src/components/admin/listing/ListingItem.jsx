@@ -33,7 +33,6 @@ export default class ListingItem extends Component {
     const { config, listing } = this.props;
     const { address, images } = listing;
     const { editToggled } = this.state;
-    const addressString = `${address.street}, ${address.city} ${address.zip}`;
     return (
       <List.Item>
         <List.Content floated='right'>
@@ -47,7 +46,7 @@ export default class ListingItem extends Component {
               ? (
                   <span>
                     <Header as='h4' color='teal' block>
-                      {addressString}
+                      {address.string}
                       <div>{`images: ${images.length}`}</div>
                     </Header>
                     <Container>
@@ -56,7 +55,7 @@ export default class ListingItem extends Component {
                   </span>
                 ) : (
                   <span>
-                    <List.Header>{addressString}</List.Header>
+                    <List.Header>{address.string}</List.Header>
                     <List.Content>{`images: ${images.length}`}</List.Content>
                   </span>
                 )

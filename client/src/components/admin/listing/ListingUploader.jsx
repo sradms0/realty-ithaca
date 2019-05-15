@@ -196,7 +196,7 @@ export default class ListingUploader extends Component {
       _address = update.address;
       _currentImages = update.images;
     }
-    const { address: {street, city, zip} } = this.state;
+    const { address } = this.state;
     this.setState({ 
       address: _address,
       newImages: [],
@@ -212,7 +212,7 @@ export default class ListingUploader extends Component {
 
       addressEdited: false,
 
-      addressString: `${street}, ${city} ${zip}`,
+      addressString: address.string,
       success: true,
       error: false
     });

@@ -24,7 +24,6 @@ export default class AddressItem extends Component {
 
   onClick = (e, { className }) => {
     const { config, address } = this.props;
-
     // base click on class of button
     if (config.view.listing) {
       if (className === 'add') {
@@ -107,7 +106,6 @@ export default class AddressItem extends Component {
   render() {
     const { active, editToggled } = this.state;
     const { config, address } = this.props;
-    const addressString = `${address.street}, ${address.city} ${address.zip}`;
     return (
       <List.Item>
         <List.Content floated='right'>
@@ -120,8 +118,8 @@ export default class AddressItem extends Component {
         <List.Content>
           {editToggled 
             ? (
-              <Header as='h4' color='red' block>{addressString}</Header>
-            ) : addressString
+              <Header as='h4' color='red' block>{address.string}</Header>
+            ) : address.string
           }
         </List.Content>
         {editToggled
