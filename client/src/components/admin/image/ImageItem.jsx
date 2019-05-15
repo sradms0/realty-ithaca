@@ -3,7 +3,7 @@ import { Button, Card, Image, Item, Modal } from 'semantic-ui-react'
 
 export default class ImageItem extends Component {
   state = {
-    active: (this.props.listing && this.activeImage()) ? true : false
+    active: this.props.config.view.listing && this.activeImage() ? true : false
   }
 
   // updating based on prospective image from listing 
