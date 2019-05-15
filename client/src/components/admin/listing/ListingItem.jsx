@@ -13,13 +13,24 @@ export default class ListingItem extends Component {
   }
 
   onClick = (e, { className }) => {
-    const { edit, listing } = this.props;
+    const { config, listing } = this.props;
     if (className === 'edit') this.toggleEdit();
-    else if (className === 'remove') edit.remove(listing);
+    else if (className === 'remove') config.remove(listing);
   } 
 
+  listingUpdate = () => {
+    const { config, listing } = this.props;
+    config.view = {listing: true, update: true}
+    return (
+      <ListingUploader 
+        config={config}
+        listing={listing}
+      />
+    );
+  }
+
   render() {
-    const { edit, listing } = this.props;
+    const { config, listing } = this.props;
     const { address, images } = listing;
     const { editToggled } = this.state;
     const addressString = `${address.street}, ${address.city} ${address.zip}`;
@@ -40,12 +51,7 @@ export default class ListingItem extends Component {
                       <div>{`images: ${images.length}`}</div>
                     </Header>
                     <Container>
-                      <ListingUploader 
-                        update={{ 
-                          listing: listing, 
-                          updateParentDisplay: edit.updateParentDisplay 
-                        }}
-                      />
+                      {this.listingUpdate()}
                     </Container>
                   </span>
                 ) : (

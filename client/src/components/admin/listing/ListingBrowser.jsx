@@ -53,8 +53,8 @@ export default class ListingBrowser extends Component {
     return (
       <div>
         <ListingList 
-          listings={listings}
-          edit={{ 
+          config={{
+            listings: listings,
             updateParentDisplay: this.toggleUpdate, 
             remove: this.deleteListing 
           }}

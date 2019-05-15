@@ -34,13 +34,14 @@ export default class ListingUploader extends Component {
   }
 
   componentDidMount() {
-    const { update } = this.props;
+    const { config } = this.props;
+    const update = config && config.view.update;
     if (update) this.preFill();
   }
 
   // fill state with listing data if this form is for updating
   preFill = () => {
-    const { listing: {address, images} } = this.props.update;
+    const { listing: {address, images} } = this.props;
     this.setState({ 
       address: address,
       currentImages: images
@@ -221,7 +222,8 @@ export default class ListingUploader extends Component {
     e.preventDefault();
     const filterIds = child => child.map(i => i._id);
     const { address, newImages, currentImages, deleteImages } = this.state;
-    const { update } = this.props;
+    const { config, listing } = this.props;
+    const update = config && config.view.update;
 
     // prepare image ids to send to server
     const images = {newImages: filterIds(newImages)} ;
@@ -232,10 +234,10 @@ export default class ListingUploader extends Component {
       if (update) {
         // add deleteImages ids to image obj for updating
         images.deleteImages = filterIds(deleteImages);
-        const res = await axios.put(`/api/listing/${update.listing._id}`, { address, images });
+        const res = await axios.put(`/api/listing/${listing._id}`, { address, images });
         // update state/form fields and parent component to show update
         this.updateState(res.data);
-        update.updateParentDisplay();
+        config.updateParentDisplay();
       } else {
         await axios.post('/api/listing', { address, images: newImages });
         // clear state
@@ -255,8 +257,10 @@ export default class ListingUploader extends Component {
   }
 
   render() {
-    const { update } = this.props;
+    const { config } = this.props;
+    const update = config && config.view.update;
     const { address, newImages, currentImages } = this.state;
+
     return ( 
       <span>
         <Form 
