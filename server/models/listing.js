@@ -13,7 +13,8 @@ const ListingSchema = new Schema({
   address: {
     type: Schema.Types.ObjectId,
     ref: 'address',
-    required: true
+    required: true,
+    unique: true
   },
 
   sold: {
