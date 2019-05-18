@@ -26,7 +26,7 @@ exports.readAllImages = asyncHandler(async (req, res, next) => {
   return res.json(images);
 });
 
-// GET: read all images
+// GET: read images by status
 exports.readImagesByStatus = asyncHandler(async (req, res, next) => {
   const { status } = req.params;
   const images = await Image.find({ status });
