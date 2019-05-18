@@ -12,4 +12,7 @@ module.exports = app => {
     .get(auth, controller.readOneAddress)
     .put(auth, controller.updateOneAddress)
     .delete(auth, controller.deleteOneAddress);
+
+  app.route('/api/address/status/:status')
+    .get(auth, controller.readAddressesByStatus);
 }
