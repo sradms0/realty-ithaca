@@ -173,7 +173,7 @@ export default class ListingUploader extends Component {
       return (
         <AddressBrowser 
           config={{
-            view: {listing: true, update: true},
+            view: {listing: true, update},
             activeAddress: this.state.address,
             addActiveAddress: this.addAddress,
             removeInactiveAddress: this.removeAddress,
