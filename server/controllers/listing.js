@@ -1,8 +1,13 @@
 'use strict';
 
 const Listing = require('../models/listing');
+const Address = require('../models/address');
 const Image = require('../models/image');
 const { asyncHandler, notFound } = require('./util/err');
+
+const setAddressStatus = asyncHandler(async (status, id) => {
+  await Address.update({ '_id': id }, { status });
+});
 
 const setImageStatus = asyncHandler(async (status, ids) => {
   await Image.update(
@@ -15,8 +20,9 @@ const setImageStatus = asyncHandler(async (status, ids) => {
 // POST: create new listing
 exports.createOneListing = asyncHandler(async (req, res, next) => {
   const newListing = await Listing.create(req.body);
-  // images belong to a listing now
+  // address and image(s) belong to a listing now
   setImageStatus(true, req.body.images);
+  setAddressStatus(true, req.body.address);
   return res.status(201).json(newListing);
 });
 
@@ -45,7 +51,13 @@ exports.updateOneListing = asyncHandler(async (req, res, next) => {
   const updates = {};
 
   // check if address and sold (boolean) are undefined
-  if (address) updates.address = address;
+  if (address) {
+    // handle address change: set status of past address and new address 
+    const listing = await Listing.findOne({ _id: req.params.id });
+    setAddressStatus(false, listing.address);
+    setAddressStatus(true, address);
+    updates.address = address;
+  } 
   if (sold !== undefined) updates.sold = sold;
 
   // set image children to empty arrays if image is undefined, so no errors are thrown 
@@ -85,6 +97,7 @@ exports.updateOneListing = asyncHandler(async (req, res, next) => {
 exports.deleteOneListing = asyncHandler(async (req, res, next) => {
   const deletedListing = await Listing.findOneAndDelete({ _id: req.params.id });
   // images no longer belong to a listing
-  setImageStatus(false, deletedListing.images)
+  setAddressStatus(false, deletedListing.address);
+  setImageStatus(false, deletedListing.images);
   return res.json( notFound(deletedListing, next) );
 });

@@ -33,6 +33,11 @@ const AddressSchema = new Schema({
       message: '5 digits required'
     },
     required: [true, 'zip required']
+  },
+
+  status: {
+    type: Boolean,
+    default: false
   }
 });
 
