@@ -10,19 +10,32 @@ export default class AddressBrowser extends Component {
   }
 
   componentDidMount() {
-    this.getAllAddresses();
+    this.getAddresses();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     // update data from server there was an update (put)
     if (prevState.updateToggler  !== this.state.updateToggler) {
-      this.getAllAddresses();
+      this.getAddresses();
     }
   }
 
-  getAllAddresses = async () => {
+  getAddresses = async () => {
+    // get images based on parent view
+    const { config } = this.props;
+    const newListing = config && 
+      config.view && 
+      config.view.listing && 
+      !config.view.update;
+    let res;
     try {
-      const res = await axios.get('/api/address');
+      // viewing addresses for a new listing
+      if (newListing) {
+        res = await axios.get('/api/address/status/false');
+        // show all addresses for listing update or browser w/o parent view
+      } else {
+        res = await axios.get('/api/address');
+      }
       this.setState(prevState => ({ addresses: res.data }))
     } catch (err) {
       console.log(err)
