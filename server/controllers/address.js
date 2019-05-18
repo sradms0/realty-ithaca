@@ -22,6 +22,13 @@ exports.readAllAddresses = asyncHandler(async (req, res, next) => {
   return res.json(addresses);
 });
 
+// GET: read addresses by status
+exports.readAddressesByStatus = asyncHandler(async (req, res, next) => {
+  const { status } = req.params;
+  const addresses = await Address.find({ status });
+  return res.json(addresses);
+});
+
 // PUT: update address by id
 exports.updateOneAddress = asyncHandler(async (req, res, next) => {
   const updatedAddress = await Address.findOneAndUpdate({_id: req.params.id}, {$set: req.body}, {new: true});
