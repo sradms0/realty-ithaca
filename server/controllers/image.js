@@ -26,6 +26,13 @@ exports.readAllImages = asyncHandler(async (req, res, next) => {
   return res.json(images);
 });
 
+// GET: read all images
+exports.readImagesByStatus = asyncHandler(async (req, res, next) => {
+  const { status } = req.params;
+  const images = await Image.find({ status });
+  return res.json(images);
+});
+
 // DELETE: delete image by id
 exports.deleteOneImage = asyncHandler(async (req, res, next) => {
   // delete image from db and cloudinary (file)
