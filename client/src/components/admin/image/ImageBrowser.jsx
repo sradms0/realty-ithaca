@@ -9,13 +9,26 @@ export default class ImageBrowser extends Component {
   }
 
   componentDidMount() {
-    this.getAllImages();
+    this.getImages();
   }
 
-  getAllImages = async () => {
+  getImages = async () => {
+    // get images based on parent view
+    const { config } = this.props;
+    const newListing = config && 
+      config.view && 
+      config.view.listing && 
+      !config.view.update;
+    let res;
     try {
-      const res = await axios.get('/api/image')
-      this.setState(prevState => ({ images: [...prevState.images, ...res.data] }));
+      // viewing images for a new listing
+      if (newListing) {
+        res = await axios.get('/api/image/status/false');
+        // show all images for listing update or browser w/o parent view
+      } else {
+        res = await axios.get('/api/image');
+      }
+      this.setState(prevState => ({ images: res.data }));
     } catch (err) {
       console.log(err);
     }
