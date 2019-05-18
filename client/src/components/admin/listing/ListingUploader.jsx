@@ -154,11 +154,13 @@ export default class ListingUploader extends Component {
   // return current image feature (browser, uploader) 
   feature = () => {
     const { imageBrowserToggled, address, currentImages, newImages } = this.state;
+    const { config } = this.props;
+    const update = config && config.view && config.view.update;
     if (imageBrowserToggled) {
       return (
         <ImageBrowser 
           config={{
-            view: {listing: true, image: true},
+            view: {listing: true, update, image: true},
             resetLastImageRemoved: this.resetLastImageRemoved,
             activeImages: this.concatActiveImages(),
             shiftImage: this.shiftImage,
