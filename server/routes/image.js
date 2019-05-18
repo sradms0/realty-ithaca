@@ -13,4 +13,7 @@ module.exports = app => {
   app.route('/api/image/:id')
     .get(auth, controller.readOneImage)
     .delete(auth, controller.deleteOneImage);
+
+  app.route('/api/image/status/:status')
+    .get(auth, controller.readImagesByStatus);
 }
