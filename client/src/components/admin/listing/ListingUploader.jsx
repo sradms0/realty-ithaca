@@ -9,6 +9,8 @@ import ImageBrowser from '../image/ImageBrowser';
 import ImageUploader from '../image/ImageUploader';
 import ImageList from '../image/ImageList';
 
+import StyledModal from '../styled/Modal';
+
 export default class ListingUploader extends Component {
   state = {
     address: null,
@@ -300,11 +302,11 @@ export default class ListingUploader extends Component {
                   {this.imageBrowser()}
                 </Modal.Content>
               </Modal>
-              <Modal trigger={<Button type='button' color='green' compact icon='plus' content='New' />}>
+              <StyledModal trigger={<Button type='button' color='green' compact icon='plus' content='New' />}>
                 <Modal.Content>
                   {this.imageUploader()}
                 </Modal.Content>
-              </Modal>
+              </StyledModal>
             </Button.Group>
           </Form.Field>
           <Button type='submit'>submit</Button>
