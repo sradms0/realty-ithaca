@@ -20,7 +20,7 @@ exports.auth = (req, res, next) => {
     req.user = decoded;
     return next();
   } catch (err) {
-    err.status = 400;
+    err.status = 401;
     return next(err);
   }
 }
