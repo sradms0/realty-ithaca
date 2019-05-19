@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Container, Form, Header, Message, Icon } from 'semantic-ui-react';
+import { Button, Container, Form, Header, Message, Modal, Icon } from 'semantic-ui-react';
 import axios from 'axios';
 
 import AddressBrowser from '../address/AddressBrowser';
@@ -20,11 +20,6 @@ export default class ListingUploader extends Component {
     // if removed from sibling list previewer
     lastAddressRemoved: null,
     lastImageRemoved: null,
-
-    addressBrowserToggled: false,
-    addressUploaderToggled: false,
-    imageBrowserToggled: false,
-    imageUploaderToggled: false,
 
     addressEdited: false,
 
@@ -130,46 +125,25 @@ export default class ListingUploader extends Component {
     this.setState({ address: address })
   }
 
-  togglerSwitch = (e, { id }) => {
-    const selected = id+'Toggled';
-
-    // re-create/set non-selected togglers to false
-    const togglers = Object.keys(this.state)
-      .filter(i => (!i.includes(id) && i.includes('Toggled')))
-      .map(i => ({ [i]: false }));
-
-    // add selected toggler with opp of prev state
-    togglers.unshift({ [selected]: !this.state[ [selected] ] });
-
-    // combine objs into one to set new state
-    const newState = togglers.reduce((acc, curr) => {
-      let key = Object.keys(curr);
-      acc[key] = curr[key];
-      return acc;
-    }, {});
-
-    this.setState(newState);
-  }
-
-  // return current image feature (browser, uploader) 
-  feature = () => {
-    const { imageBrowserToggled, address, currentImages, newImages } = this.state;
+  imageBrowser = () => {
     const { config } = this.props;
     const update = config && config.view && config.view.update;
-    if (imageBrowserToggled) {
-      return (
-        <ImageBrowser 
-          config={{
-            view: {listing: true, update, image: true},
-            resetLastImageRemoved: this.resetLastImageRemoved,
-            activeImages: this.concatActiveImages(),
-            shiftImage: this.shiftImage,
-            lastImageRemoved: this.state.lastImageRemoved
-          }}
-        />
-      );
-    }
-    if (this.state.addressBrowserToggled) {
+    return (
+      <ImageBrowser 
+        config={{
+          view: {listing: true, update, image: true},
+          resetLastImageRemoved: this.resetLastImageRemoved,
+          activeImages: this.concatActiveImages(),
+          shiftImage: this.shiftImage,
+          lastImageRemoved: this.state.lastImageRemoved
+        }}
+      />
+    );
+  }
+
+  addressBrowser = () => {
+    const { config } = this.props;
+    const update = config && config.view && config.view.update;
       return (
         <AddressBrowser 
           config={{
@@ -183,11 +157,11 @@ export default class ListingUploader extends Component {
           }}
         />
       );
-    }
-    if (this.state.imageUploaderToggled)    return (<ImageUploader />);
-    if (this.state.addressUploaderToggled)  return (<AddressUploader />);
-    return null;
   }
+
+  addressUploader = () => (<AddressUploader />);
+
+  imageUploader = () => (<ImageUploader />);
 
   updateState = (update=null) => {
     // if this is form is for updating, then 
@@ -295,8 +269,17 @@ export default class ListingUploader extends Component {
               }}
             />
             <Button.Group>
-              <Button type='button' id='addressBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
-              <Button type='button' id='addressUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />
+              <Modal trigger={<Button type='button' color='teal' compact icon='search' content='Browse' />}>
+                <Modal.Content>
+                  {this.addressBrowser()}
+                </Modal.Content>
+              </Modal>
+              
+              <Modal trigger={<Button type='button' color='green' compact icon='plus' content='New' />}>
+                <Modal.Content>
+                  {this.addressUploader()}
+                </Modal.Content>
+              </Modal>
             </Button.Group>
           </Form.Field>
 
@@ -312,16 +295,20 @@ export default class ListingUploader extends Component {
               }}
             />
             <Button.Group>
-              <Button type='button' id='imageBrowser' color='teal' compact onClick={this.togglerSwitch} icon='search' content='Browse' />
-              <Button type='button' id='imageUploader' color='green' compact onClick={this.togglerSwitch} icon='plus' content='New' />
+              <Modal trigger={<Button type='button' color='teal' compact icon='search' content='Browse' />}>
+                <Modal.Content>
+                  {this.imageBrowser()}
+                </Modal.Content>
+              </Modal>
+              <Modal trigger={<Button type='button' color='green' compact icon='plus' content='New' />}>
+                <Modal.Content>
+                  {this.imageUploader()}
+                </Modal.Content>
+              </Modal>
             </Button.Group>
           </Form.Field>
           <Button type='submit'>submit</Button>
         </Form>
-
-        <Container>
-          { this.feature() }
-        </Container>
       </span>
     );
   }
