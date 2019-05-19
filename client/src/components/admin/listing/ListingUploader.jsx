@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Container, Form, Header, Message, Modal, Icon } from 'semantic-ui-react';
+import { Button, Form, Header, Message, Icon } from 'semantic-ui-react';
 import axios from 'axios';
 
 import AddressBrowser from '../address/AddressBrowser';
@@ -9,7 +9,8 @@ import ImageBrowser from '../image/ImageBrowser';
 import ImageUploader from '../image/ImageUploader';
 import ImageList from '../image/ImageList';
 
-import StyledModal from '../styled/Modal';
+import Modal from '../styled/Modal';
+import Container from '../styled/Container';
 
 export default class ListingUploader extends Component {
   state = {
@@ -287,26 +288,28 @@ export default class ListingUploader extends Component {
 
           <Form.Field>
             <label htmlFor='newImages'>Images</label>
-            <ImageList 
-              config={{
-                view:{listing: true, preview: true},
-                update: update ? true : false,
-                activeImages: this.concatActiveImages(),
-                images: this.concatActiveImages(),
-                shiftImage: this.shiftImage
-              }}
-            />
+            <Container>
+              <ImageList 
+                config={{
+                  view:{listing: true, preview: true},
+                  update: update ? true : false,
+                  activeImages: this.concatActiveImages(),
+                  images: this.concatActiveImages(),
+                  shiftImage: this.shiftImage
+                }}
+              />
+            </Container>
             <Button.Group>
               <Modal trigger={<Button type='button' color='teal' compact icon='search' content='Browse' />}>
                 <Modal.Content>
                   {this.imageBrowser()}
                 </Modal.Content>
               </Modal>
-              <StyledModal trigger={<Button type='button' color='green' compact icon='plus' content='New' />}>
+              <Modal trigger={<Button type='button' color='green' compact icon='plus' content='New' />}>
                 <Modal.Content>
                   {this.imageUploader()}
                 </Modal.Content>
-              </StyledModal>
+              </Modal>
             </Button.Group>
           </Form.Field>
           <Button type='submit'>submit</Button>
