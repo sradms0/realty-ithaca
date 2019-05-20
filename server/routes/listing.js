@@ -12,4 +12,7 @@ module.exports = app => {
     .get(controller.readOneListing)
     .put(auth, controller.updateOneListing)
     .delete(auth, controller.deleteOneListing);
+
+  app.route('/api/listing/search/:query')
+    .get(controller.readListingsBySearch);
 }
