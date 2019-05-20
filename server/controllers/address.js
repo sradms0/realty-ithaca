@@ -29,7 +29,7 @@ exports.readAddressesByStatus = asyncHandler(async (req, res, next) => {
   return res.json(addresses);
 });
 
-// GET: read addresses searching text indices
+// GET: read addresses by searching street/city/state/zip
 exports.readAddressesBySearch = asyncHandler(async (req, res, next) => {
   const { query } = req.params;
   const re = new RegExp(query, 'i');
