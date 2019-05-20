@@ -44,6 +44,23 @@ exports.readAllListings = asyncHandler(async (req, res, next) => {
   return res.json(listings);
 });
 
+// GET: read listings by searching 
+exports.readListingsBySearch = asyncHandler(async (req, res, next) => {
+  // the only solution i am able to use..
+  const { query } = req.params;
+  const re = new RegExp(query, 'i');
+  let listings =  await Listing.find().populate('address');
+  listings = listings.filter(i => {
+    const { address: {street, city, state, zip} } = i;
+    if (re.test(street) || 
+        re.test(city)   || 
+        re.test(state)  || 
+        re.test(zip)
+    ) return i;
+  });
+  return res.json(listings);
+});
+
 // PUT: update listing by id
 exports.updateOneListing = asyncHandler(async (req, res, next) => {
   // 'images' is an array; avoid overwriting (if req.body.images exists) by isolating it
