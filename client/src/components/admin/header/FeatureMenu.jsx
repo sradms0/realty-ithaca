@@ -10,16 +10,7 @@ export default function FeatureMenu({ config }) {
   const menuItems = () => content.map(i => (
     <Menu.Item key={i} as={ NavLink } to={`${root}/${i.toLowerCase()}`} content={i}/>
   ));
-  return (
-    <Menu secondary>
-        {menuItems()}
-        <Menu.Menu position='right'>
-          <Menu.Item>
-            <Input icon='search' placeholder='Search...' />
-          </Menu.Item>
-        </Menu.Menu>
-      </Menu>
-  )
+  return (<Menu secondary>{menuItems()}</Menu>);
 }
 
 
