@@ -27,7 +27,7 @@ const AddressSchema = new Schema({
   },
 
   zip: {
-    type: Number,
+    type: String,
     validate: {
       validator: z => /\b(\d{5})\b/.test(z),
       message: '5 digits required'
@@ -53,8 +53,8 @@ AddressSchema.virtual('string').get(function() {
 });
 
 // allow for virtual to be returned in json
-AddressSchema.set('toJSON', { virtuals: true })
-
+AddressSchema.set('toJSON', { virtuals: true });
+AddressSchema.set('toObject', { virtuals: true });
 
 // export address model
-module.exports = mongoose.model('address', AddressSchema)
+module.exports = mongoose.model('address', AddressSchema);
