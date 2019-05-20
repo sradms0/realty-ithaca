@@ -29,6 +29,22 @@ exports.readAddressesByStatus = asyncHandler(async (req, res, next) => {
   return res.json(addresses);
 });
 
+// GET: read addresses searching text indices
+exports.readAddressesBySearch = asyncHandler(async (req, res, next) => {
+  const { query } = req.params;
+  const re = new RegExp(query, 'i');
+  const addresses =  await Address.find({ 
+    $or: [
+      {street: re},
+      {city: re},
+      {state: re},
+      {zip: re}
+    ]
+  });
+  return res.json( notFound(addresses, next) );
+})
+
+
 // PUT: update address by id
 exports.updateOneAddress = asyncHandler(async (req, res, next) => {
   const updatedAddress = await Address.findOneAndUpdate({_id: req.params.id}, {$set: req.body}, {new: true});
