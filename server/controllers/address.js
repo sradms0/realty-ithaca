@@ -3,15 +3,13 @@
 const Address  = require('../models/address');
 const { asyncHandler, notFound } = require('./util/err');
 
-const searchConfig = (req, {status=null}={}) => {
-  const { query } = req.params;
+const searchConfig = req => {
+  const { query, status } = req.params;
   const re = new RegExp(query, 'i');
   let config = {};
 
-  // if there isn't status, then all addresses
-  // are being searched, otherwise config.status
-  // is then set
-  if (status !== null) config.status = status;
+  // search will proceed by status if one specified
+  if (status !== undefined) config.status = status;
 
   config.$or = [
     {street: re},
@@ -50,8 +48,8 @@ exports.readAddressesByStatus = asyncHandler(async (req, res, next) => {
 });
 
 // GET: read addresses by searching street/city/state/zip
-exports.readAllAddressesBySearch = asyncHandler(async (req, res, next) => {
-  const addresses =  await Address.find(searchConfig(req));
+exports.readAddressesBySearch = asyncHandler(async (req, res, next) => {
+  const addresses =  await Address.find( searchConfig(req) );
   return res.json( notFound(addresses, next) );
 });
 
