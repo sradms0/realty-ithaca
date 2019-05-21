@@ -3,7 +3,7 @@
 const Address  = require('../models/address');
 const { asyncHandler, notFound } = require('./util/err');
 
-const searchConfig = (req, status=null) => {
+const searchConfig = (req, {status=null}={}) => {
   const { query } = req.params;
   const re = new RegExp(query, 'i');
   let config = {};
@@ -51,6 +51,10 @@ exports.readAllAddressesBySearch = asyncHandler(async (req, res, next) => {
   const addresses =  await Address.find(searchConfig(req));
   return res.json( notFound(addresses, next) );
 });
+
+//exports.readFreeAddressesBySearch = asyncHandler(async (req, res, next) => {
+  //const addresses = await Address.find(searchConfig(req, {status: }))
+//})
 
 // PUT: update address by id
 exports.updateOneAddress = asyncHandler(async (req, res, next) => {

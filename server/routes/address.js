@@ -17,5 +17,5 @@ module.exports = app => {
     .get(auth, controller.readAddressesByStatus);
 
   app.route('/api/address/search/:query')
-    .get(auth, controller.readAddressesBySearch);
+    .get(auth, controller.readAllAddressesBySearch);
 }
