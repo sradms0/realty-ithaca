@@ -8,6 +8,9 @@ const searchConfig = (req, {status=null}={}) => {
   const re = new RegExp(query, 'i');
   let config = {};
 
+  // if there isn't status, then all addresses
+  // are being searched, otherwise config.status
+  // is then set
   if (status !== null) config.status = status;
 
   config.$or = [
@@ -51,10 +54,6 @@ exports.readAllAddressesBySearch = asyncHandler(async (req, res, next) => {
   const addresses =  await Address.find(searchConfig(req));
   return res.json( notFound(addresses, next) );
 });
-
-//exports.readFreeAddressesBySearch = asyncHandler(async (req, res, next) => {
-  //const addresses = await Address.find(searchConfig(req, {status: }))
-//})
 
 // PUT: update address by id
 exports.updateOneAddress = asyncHandler(async (req, res, next) => {
