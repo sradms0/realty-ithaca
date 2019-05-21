@@ -3,6 +3,23 @@
 const Address  = require('../models/address');
 const { asyncHandler, notFound } = require('./util/err');
 
+const searchConfig = (req, status=null) => {
+  const { query } = req.params;
+  const re = new RegExp(query, 'i');
+  let config = {};
+
+  if (status !== null) config.status = status;
+
+  config.$or = [
+    {street: re},
+    {city: re},
+    {state: re},
+    {zip: re}
+  ];
+
+  return config;
+}
+
 // create a new address
 exports.createOneAddress = asyncHandler(async (req, res, next) => {
   // save address from body to db
@@ -30,20 +47,10 @@ exports.readAddressesByStatus = asyncHandler(async (req, res, next) => {
 });
 
 // GET: read addresses by searching street/city/state/zip
-exports.readAddressesBySearch = asyncHandler(async (req, res, next) => {
-  const { query } = req.params;
-  const re = new RegExp(query, 'i');
-  const addresses =  await Address.find({ 
-    $or: [
-      {street: re},
-      {city: re},
-      {state: re},
-      {zip: re}
-    ]
-  });
+exports.readAllAddressesBySearch = asyncHandler(async (req, res, next) => {
+  const addresses =  await Address.find(searchConfig(req));
   return res.json( notFound(addresses, next) );
-})
-
+});
 
 // PUT: update address by id
 exports.updateOneAddress = asyncHandler(async (req, res, next) => {
