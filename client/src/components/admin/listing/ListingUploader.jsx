@@ -24,6 +24,11 @@ export default class ListingUploader extends Component {
     lastAddressRemoved: null,
     lastImageRemoved: null,
 
+    addressBrowserToggled: false,
+    addressUploaderToggled: false,
+    imageBrowserToggled: false,
+    imageUploaderToggled: false,
+
     addressEdited: false,
 
     addressString: '',
@@ -127,6 +132,27 @@ export default class ListingUploader extends Component {
   updateAddress = (address) => {
     this.setState({ address: address })
   }
+
+  togglerSwitch = (e, { feature }={}) => {
+    const selected = feature+'Toggled';
+    // re-create/set non-selected togglers to false
+    const togglers = Object.keys(this.state)
+      .filter(i => (!i.includes(feature) && i.includes('Toggled')))
+      .map(i => ({ [i]: false }));
+    // add selected toggler with opp of prev state
+    if (feature) {
+      togglers.unshift({ [selected]: !this.state[ [selected] ] });
+    }
+    // combine objs into one to set new state
+    const newState = togglers.reduce((acc, curr) => {
+      let key = Object.keys(curr);
+      acc[key] = curr[key];
+      return acc;
+    }, {});
+    this.setState(newState);
+  }
+
+  active
 
   imageBrowser = () => {
     const { config } = this.props;
@@ -238,7 +264,15 @@ export default class ListingUploader extends Component {
   render() {
     const { config } = this.props;
     const update = config && config.view.update;
-    const { address, newImages, currentImages } = this.state;
+    const { 
+      addressBrowserToggled,
+      addressUploaderToggled,
+      imageBrowserToggled,
+      imageUploaderToggled,
+      address, 
+      newImages, 
+      currentImages
+    } = this.state;
 
     return ( 
       <span>
@@ -272,17 +306,24 @@ export default class ListingUploader extends Component {
               }}
             />
             <Button.Group>
-              <Modal trigger={<Button type='button' color='teal' compact icon='search' content='Browse' />}>
-                <Modal.Content>
-                  {this.addressBrowser()}
-                </Modal.Content>
-              </Modal>
-              
-              <Modal trigger={<Button type='button' color='green' compact icon='plus' content='New' />}>
-                <Modal.Content>
-                  {this.addressUploader()}
-                </Modal.Content>
-              </Modal>
+              <Button 
+                type='button' 
+                color='teal' 
+                compact 
+                icon='search' 
+                content='Browse' 
+                feature='addressBrowser' 
+                onClick={this.togglerSwitch}
+              />
+              <Button 
+                type='button' 
+                color='green' 
+                compact 
+                icon='plus' 
+                content='New' 
+                feature='addressUploader'
+                onClick={this.togglerSwitch}
+              />
             </Button.Group>
           </Form.Field>
 
@@ -300,20 +341,49 @@ export default class ListingUploader extends Component {
               />
             </Container>
             <Button.Group>
-              <Modal trigger={<Button type='button' color='teal' compact icon='search' content='Browse' />}>
-                <Modal.Content>
-                  {this.imageBrowser()}
-                </Modal.Content>
-              </Modal>
-              <Modal trigger={<Button type='button' color='green' compact icon='plus' content='New' />}>
-                <Modal.Content>
-                  {this.imageUploader()}
-                </Modal.Content>
-              </Modal>
+              <Button 
+                type='button' 
+                color='teal' 
+                compact 
+                icon='search' 
+                content='Browse' 
+                feature='imageBrowser'
+                onClick={this.togglerSwitch}
+              />
+              <Button 
+                type='button' 
+                color='green' 
+                compact 
+                icon='plus' 
+                content='New' 
+                feature='imageUploader'
+                onClick={this.togglerSwitch}
+              />
             </Button.Group>
           </Form.Field>
           <Button type='submit'>submit</Button>
         </Form>
+        <Modal open={addressBrowserToggled} onClose={this.togglerSwitch}>
+          <Modal.Content>
+            {this.addressBrowser()}
+          </Modal.Content>
+        </Modal>
+        <Modal open={addressUploaderToggled} onClose={this.togglerSwitch}>
+          <Modal.Content>
+            {this.addressUploader()}
+          </Modal.Content>
+        </Modal>
+        <Modal open={imageBrowserToggled} onClose={this.togglerSwitch}>
+          <Modal.Content>
+            {this.imageBrowser()}
+          </Modal.Content>
+        </Modal>
+
+        <Modal open={imageUploaderToggled} onClose={this.togglerSwitch}>
+          <Modal.Content>
+            {this.imageUploader()}
+          </Modal.Content>
+        </Modal>
       </span>
     );
   }
