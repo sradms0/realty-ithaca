@@ -17,8 +17,8 @@ module.exports = app => {
     .get(auth, controller.readAddressesByStatus);
 
   app.route('/api/address/status/:status/search/:query')
-    .get(auth, controller.readAddressesBySearch);
+    .post(auth, controller.readAddressesBySearch);
 
   app.route('/api/address/search/:query')
-    .get(auth, controller.readAddressesBySearch);
+    .post(auth, controller.readAddressesBySearch);
 }
