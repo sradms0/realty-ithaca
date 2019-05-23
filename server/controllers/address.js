@@ -3,22 +3,27 @@
 const Address  = require('../models/address');
 const { asyncHandler, notFound } = require('./util/err');
 
-const searchConfig = req => {
-  const { query, status } = req.params;
+const config = req => {
+  const { 
+    params: {query, status}, 
+    body: {activeAddress} 
+  } = req;
+
   const re = new RegExp(query, 'i');
-  let config = {};
+  let orArr = [];
 
-  // search will proceed by status if one specified
-  if (status !== undefined) config.status = status;
+  if (query) {
+    orArr = [
+      {street: re},
+      {city: re},
+      {state: re},
+      {zip: re}
+    ];
+  }
+  if (activeAddress) orArr.unshift({ _id: activeAddress });
+  if (status !== undefined) orArr.unshift({ status });
 
-  config.$or = [
-    {street: re},
-    {city: re},
-    {state: re},
-    {zip: re}
-  ];
-
-  return config;
+  return {$or: orArr};
 }
 
 // create a new address
@@ -36,20 +41,19 @@ exports.readOneAddress = asyncHandler(async (req, res, next) => {
 
 // GET: read all addresses
 exports.readAllAddresses = asyncHandler(async (req, res, next) => {
-  const addresses = await Address.find({})
+  const addresses = await Address.find( config(req) )
   return res.json(addresses);
 });
 
 // GET: read addresses by status
 exports.readAddressesByStatus = asyncHandler(async (req, res, next) => {
-  const { status } = req.params;
-  const addresses = await Address.find({ status });
+  const addresses = await Address.find( config(req) );
   return res.json(addresses);
 });
 
 // GET: read addresses by searching street/city/state/zip
 exports.readAddressesBySearch = asyncHandler(async (req, res, next) => {
-  const addresses =  await Address.find( searchConfig(req) );
+  const addresses =  await Address.find( config(req) );
   return res.json( notFound(addresses, next) );
 });
 
