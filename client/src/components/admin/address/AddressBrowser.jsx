@@ -26,19 +26,18 @@ export default class AddressBrowser extends Component {
   getAddresses = async () => {
     // get images based on parent view
     const { config } = this.props;
-    const newListing = config && 
-      config.view && 
-      config.view.listing && 
-      !config.view.update;
-    let res;
+    const listing = config && config.view && config.view.listing;
+    const updateListing = listing && config.view.update;
+    let res, activeAddress;
+
     try {
-      // viewing addresses for a new listing
-      if (newListing) {
-        res = await axios.get('/api/address/status/false');
-        // show all addresses for listing update or browser w/o parent view
-      } else {
-        res = await axios.get('/api/address');
-      }
+      // viewing addresses for a listing (new/update)
+      // or view browser w/o parent
+      if (listing) {
+        if (updateListing) activeAddress = config.activeAddress._id;
+        res = await axios.post('/api/address/status/false', { activeAddress });
+      } else res = await axios.get('/api/address');
+
       this.setState(prevState => ({ addresses: res.data }))
     } catch (err) {
       console.log(err)
@@ -96,11 +95,27 @@ export default class AddressBrowser extends Component {
 
   onSubmit = async e => {
     const { query } = this.state;
+    const { config } = this.props;
+    let path = '/api/address';
+    let activeAddress;
+
+    // build api path based on config view
+    // either searching for all, owned, or free addrs
+    if (config && config.view.listing) {
+      const { update } = config.view;
+      if (update) activeAddress = config.activeAddress._id;
+      // if listing new, searching for free addrs
+      // if listing update, searching for free addrs 
+      //    ****but also need current address to show...****
+      path += '/status/false';
+    }
+
+    path += `/search/${query}`;
     this.toggleSearchStatus();
     e.preventDefault();
 
     try {
-      const res = await axios.post(`/api/address/search/${query}`);
+      const res = await axios.post(path, { activeAddress });
       this.setState({ addresses: res.data });
       console.log('success');
     } catch(err) {
