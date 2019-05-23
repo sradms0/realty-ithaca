@@ -14,7 +14,7 @@ module.exports = app => {
     .delete(auth, controller.deleteOneAddress);
 
   app.route('/api/address/status/:status')
-    .get(auth, controller.readAddressesByStatus);
+    .post(auth, controller.readAddressesByStatus);
 
   app.route('/api/address/status/:status/search/:query')
     .post(auth, controller.readAddressesBySearch);
