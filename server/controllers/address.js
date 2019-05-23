@@ -4,6 +4,7 @@ const Address  = require('../models/address');
 const { asyncHandler, notFound } = require('./util/err');
 
 const config = req => {
+  console.log(req.body);
   const { 
     params: {query, status}, 
     body: {activeAddress} 
@@ -11,6 +12,8 @@ const config = req => {
 
   const re = new RegExp(query, 'i');
   let orArr = [];
+
+  let config = {};
 
   if (query) {
     orArr = [
@@ -22,8 +25,8 @@ const config = req => {
   }
   if (activeAddress) orArr.unshift({ _id: activeAddress });
   if (status !== undefined) orArr.unshift({ status });
-
-  return {$or: orArr};
+  if (orArr.length > 0) config.$or = [...orArr];
+  return config;
 }
 
 // create a new address
