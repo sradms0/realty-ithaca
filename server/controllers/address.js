@@ -11,21 +11,38 @@ const config = req => {
   } = req;
 
   const re = new RegExp(query, 'i');
-  let orArr = [];
+  const regs = [
+    {street: re},
+    {city: re},
+    {state: re},
+    {zip: re}
+  ];
 
+  const $or = [...regs];
+  const statusExists = () => status !== undefined;
   let config = {};
 
   if (query) {
-    orArr = [
-      {street: re},
-      {city: re},
-      {state: re},
-      {zip: re}
-    ];
-  }
-  if (activeAddress) orArr.unshift({ _id: activeAddress });
-  if (status !== undefined) orArr.unshift({ status });
-  if (orArr.length > 0) config.$or = [...orArr];
+    // update listing: search addrs, and still allow active addr search
+    if (activeAddress && statusExists()) {
+      config.$or = [
+        {$and: [ {status}, {$or} ]},
+        {$and: [ {_id: activeAddress}, {$or} ]}
+      ];
+    } 
+
+    // new listings: search only available addrs
+    else if (statusExists()) config.$and = [ {status}, {$or} ];
+
+    // searching all (w/o listing parent)
+    else config.$or = $or;
+
+    // update listing: show all avail addrs, but show active addr
+  } else if (activeAddress && statusExists()) config.$or = [ {status}, {_id: activeAddress} ]
+
+  // new listing: showing all available addrs
+  else if (statusExists()) config.status = status;
+  console.log(config);
   return config;
 }
 
